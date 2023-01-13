@@ -202,3 +202,4 @@ int main()
 	StackInit(&s2);// 不知道存多少个数据
 	return 0;
 }
+// 测试
