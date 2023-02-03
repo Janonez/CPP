@@ -411,30 +411,94 @@ using namespace std;
 //	return 0;
 //}
 
-inline int Add(int x, int y)
-{
-	int z = x + y;
-	z = x + y;
-	z += x + y;
-	//z = x + y;
-	//z = x + y;
-	//z = x * y;
-	//z = x + y;
-	//z += x + y;
-	//z -= x + y;
-	//z += x + y;
-	//z += x * y;
-	//z -= x / y;
-	//z += x + y;
-	//z += x + y;
+//inline int Add(int x, int y)
+//{
+//	int z = x + y;
+//	z = x + y;
+//	z += x + y;
+//	//z = x + y;
+//	//z = x + y;
+//	//z = x * y;
+//	//z = x + y;
+//	//z += x + y;
+//	//z -= x + y;
+//	//z += x + y;
+//	//z += x * y;
+//	//z -= x / y;
+//	//z += x + y;
+//	//z += x + y;
+//
+//	return z;
+//}
+//
+//int main()
+//{
+//	int ret = Add(1, 2);
+//	cout << ret << endl;
+//
+//	return 0;
+//}
 
-	return z;
+//#include "Func.h"
+//int main()
+//{
+//	f(10);
+//	return 0;
+//}
+
+//int main()
+//{
+//	int a = 0;
+//	// int b = a;
+//	auto b = a;
+//	auto c = &a;
+//	cout << typeid(b).name() << endl;
+//	cout << typeid(c).name() << endl;
+//
+//}
+
+//int main()
+//{
+//	int a = 10;
+//	auto b = &a;
+//	auto* c = &a;
+//	auto& d = a;
+//	cout << typeid(b).name() << endl;
+//	cout << typeid(c).name() << endl;
+//	cout << typeid(d).name() << endl;
+//
+//	int array[] = { 1,2,3,4,5,6,7 };
+//	for (int i = 0; i < sizeof(array) / sizeof(int); i++)
+//	{
+//		cout << array[i] << " ";
+//	}
+//	cout << endl;
+//
+//	for (auto e : array)
+//	{
+//		cout << e << " ";
+//	}
+//	cout << endl;
+//
+//	for (auto& e : array)
+//		e *= 2;
+//	for (auto e : array)
+//		cout << e << " ";
+//	return 0;
+//}
+
+void f(int)
+{
+	cout << "f(int)" << endl;
+}
+void f(int*)
+{
+	cout << "f(int*)" << endl;
 }
 
 int main()
 {
-	int ret = Add(1, 2);
-	cout << ret << endl;
-
+	f(0);
+	f(NULL);
 	return 0;
 }
