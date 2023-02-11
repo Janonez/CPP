@@ -155,6 +155,10 @@ public:
 			return true;
 		else
 			return false;
+
+		//return _year < d._year
+		//	|| (_year == d._year && _month < d._month)
+		//	|| (_year == d._year && _month == d._month && _day < d._day);
 	}
 private:
 	int _year;
