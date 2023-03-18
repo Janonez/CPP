@@ -65,6 +65,13 @@ bool Date::operator>=(const Date& d)
 
 Date& Date::operator+=(int day)
 {
+	// 如果加一个负数的话，相当于减等(-day)
+	if (day < 0)
+	{
+		// 复用 -= 操作符
+		*this -= -day;
+		return *this;
+	}
 	_day += day;
 	while (_day > GetMonthDay(_year, _month))
 	{
@@ -96,6 +103,7 @@ Date& Date::operator+=(int day)
 //	}
 //	return temp;
 //}
+// 直接复用
 Date Date::operator+(int day)
 {
 	Date temp(*this);
@@ -137,11 +145,75 @@ Date Date::operator++(int)
 	return temp;
 }
 
-//Date& Date::operator-(const Date& d)
-//{
-//
-//}
-//Date& Date::operator-(int day)
-//{
-//
-//}
+
+Date& Date::operator-=(int day)
+{
+	if (day < 0)
+	{
+		*this += -day;
+		return *this;
+	}
+	_day -= day;
+	while (_day <= 0)
+	{
+		_month--;
+		if (_month == 0)
+		{
+			_year--;
+			_month = 12;
+		}
+		_day += GetMonthDay(_year, _month);
+	}
+	return *this;
+}
+
+Date Date::operator-(int day)
+{
+	Date tmp(*this);
+	tmp -= day;
+	return *this;
+}
+
+Date& Date::operator--()
+{
+	*this -= 1;
+	return *this;
+}
+
+Date Date::operator--(int)// 后置--,要保存减之前的数据
+{
+	Date tmp(*this);
+	*this -= 1;
+	return tmp;
+}
+
+int Date::operator-(const Date& d)
+{
+	Date max = *this;
+	Date min = d;
+	int flag = 1;
+	if (*this < d)
+	{
+		max = d;
+		min = *this;
+		flag = -1;
+	}
+	int n = 0;
+	while (min != max)
+	{
+		++min;
+		++n;
+	}
+	return n * flag;
+}
+// 函数定义
+ostream& operator<<(ostream& out, const Date& d)
+{
+	out << d._year << "年" << d._month << "月" << d._day << "日" << endl;
+	return out;
+}
+istream& operator>>(istream& in, Date& d)
+{
+	in >> d._year >> d._month >> d._day;
+	return in;
+}

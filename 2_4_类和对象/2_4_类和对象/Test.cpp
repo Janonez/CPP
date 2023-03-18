@@ -248,8 +248,101 @@ void TestDate1()
 	
 }
 
+void TestDate2()
+{
+	Date d1(2023, 2, 4);
+	d1.Print();
+
+	Date d2 = d1 + 100;
+	d2.Print();
+
+	Date d3 = d1 + 100;
+	d3.Print();
+}
+
+void TestDate3()
+{
+	Date d1(2023, 2, 4);
+	d1.Print();
+
+	Date ret1 = ++d1;  // d1.operator++();
+	d1.Print();
+	ret1.Print();
+
+
+	Date ret2 = d1++;  // d1.operator++(0);
+	d1.Print();
+	ret2.Print();
+
+}
+
+void TestDate4()
+{
+	Date d1(2023, 2, 4);
+	d1.Print();
+	
+	d1 -= 100;
+	d1.Print();
+
+	Date d2(2023, 2, 7);
+	d2 += -100;
+	d2.Print();
+
+	Date d3(2023, 2, 7);
+	d3 -= -100;
+	d3.Print();
+}
+
+void TestDate5()
+{
+	Date d1(2023, 2, 4);
+	d1.Print();
+
+
+	Date d2(2023, 4, 5);
+	d2.Print();
+
+	Date d3(2023, 5, 1);
+	d2.Print();
+
+	cout << d2 - d1 << endl;
+	cout << d1 - d2 << endl;
+	cout << d3 - d1 << endl;
+}
+//void operator<<(ostream& out,const Date& d);
+//ostream& operator<<(ostream& out, const Date& d);
+// 
+//ostream& operator<<(ostream& out, const Date& d)
+//{
+//	out << d._year << "Äê" << d._month << "ÔÂ" << d._day << "ÈÕ" << endl;
+//	return out;
+//}
+void TestDate6()
+{
+	Date d1(2023, 2, 4);
+	Date d2(2020, 1, 1);
+	operator<<(cout, d1);
+	cout << d1;
+	cout << d1 << d2;
+
+	d1 -= 100;
+	cout << d1;
+}
+
+void TestDate7()
+{
+	Date d1;
+	cin >> d1;
+	cout << d1;
+}
 int main()
 {
-	TestDate1();
+	//TestDate1();
+	//TestDate2();
+	//TestDate3();
+	//TestDate4();
+	//TestDate5();
+	//TestDate6();
+	TestDate7();
 	return 0;
 }
