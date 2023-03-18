@@ -14,18 +14,18 @@ class Date
 public:
 	// 类的成员函数的默认参数不可以写在右边赋值，所以类的成员函数只能写在定义里赋值！
 	Date(int year = 1970, int month = 1, int day = 1);
-	void Print();
-	bool operator==(const Date& d);
-	bool operator!=(const Date& d);
+	void Print() const;
+	bool operator==(const Date& d) const;
+	bool operator!=(const Date& d) const;
 
-	bool operator<(const Date& d);
-	bool operator<=(const Date& d);
+	bool operator<(const Date& d) const;
+	bool operator<=(const Date& d) const;
 
-	bool operator>(const Date& d);
-	bool operator>=(const Date& d);
+	bool operator>(const Date& d) const;
+	bool operator>=(const Date& d) const;
 
 	Date& operator+=(int day);
-	Date operator+(int day);
+	Date operator+(int day) const;
 	Date& operator-=(int day);
 
 	// ++d1
@@ -35,10 +35,10 @@ public:
 	Date operator++(int);
 
 	// d1 - 100
-	Date operator-(int day);
+	Date operator-(int day) const;
 
 	// d1 - d2;
-	int operator-(const Date& d);
+	int operator-(const Date& d) const;
 
 	// --d1
 	Date& operator--();
