@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-#include <iostream>
-#include <string>
-using namespace std;
+//#include <iostream>
+//#include <string>
+//using namespace std;
 
 //int main()
 //{
@@ -49,32 +49,67 @@ using namespace std;
 //    return 0;
 //}
 
+//int main()
+//{
+//    string num1("123");
+//    string num2("456");
+//    int len1 = num1.size();
+//    int len2 = num2.size();
+//    string res(len1 + len2, '0');
+//    for (int i = len1 - 1; i >= 0; i--)
+//    {
+//        for (int j = len2 - 1; j >= 0; j--)
+//        {
+//            int tmp = (res[i + j + 1] - '0') + (num1[i] - '0') * (num2[j] - '0');
+//            res[i + j + 1] = tmp % 10 + '0';
+//            res[i + j] += tmp / 10;
+//        }
+//    }
+//    for (int i = 0; i < len1 + len2; i++)
+//    {
+//        if (res[i] != '0')
+//        {
+//            cout << res.substr(i);
+//            return 0;
+//        }
+//            
+//    }
+//    cout << "0";
+//
+//    return 0;
+//}
+
+//int main()
+//{
+//	string s1;
+//	cout << s1.capacity() << endl;
+//	cout << s1.size() << endl;
+//	cout << s1.length() << endl;
+//	cout << (int)"лл" << endl;
+//	return 0;
+//}
+#include <iostream>
+using namespace std;
+#include "string.h"
+
 int main()
 {
-    string num1("123");
-    string num2("456");
-    int len1 = num1.size();
-    int len2 = num2.size();
-    string res(len1 + len2, '0');
-    for (int i = len1 - 1; i >= 0; i--)
-    {
-        for (int j = len2 - 1; j >= 0; j--)
-        {
-            int tmp = (res[i + j + 1] - '0') + (num1[i] - '0') * (num2[j] - '0');
-            res[i + j + 1] = tmp % 10 + '0';
-            res[i + j] += tmp / 10;
-        }
-    }
-    for (int i = 0; i < len1 + len2; i++)
-    {
-        if (res[i] != '0')
-        {
-            cout << res.substr(i);
-            return 0;
-        }
-            
-    }
-    cout << "0";
+	//janonez::test_string1();
+	//janonez::test_string2();
+	//janonez::test_string3();
+	//janonez::test_string4();
+	//janonez::test_string5();
+	janonez::test_string6();
 
-    return 0;
+
+	/*string s1("hello world");
+	cout << s1.capacity() << endl;
+	s1.resize(19, 'x');
+	cout << s1.capacity() << endl;
+	cout << s1;*/
+
+	/*string s1("hello world");
+	s1.insert(s1.begin()+5, 'x');
+	cout << s1 << endl;*/
+	return 0;
 }
