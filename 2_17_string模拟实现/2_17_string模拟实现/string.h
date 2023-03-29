@@ -60,13 +60,17 @@ namespace janonez
 			delete[] _str;
 			_size = _capacity = 0;
 		}
-		const char* c_str()
+		const char* c_str() // 遇到'\0'就停止
 		{
 			return _str;
 		}
 		size_t size() const
 		{
 			return _size;
+		}
+		size_t capacity() const
+		{
+			return _capacity;
 		}
 		const char& operator[](size_t pos) const
 		{
@@ -120,55 +124,65 @@ namespace janonez
 		//---------------------------------------------------------
 		void resize(size_t n, char ch = '\0')
 		{
-			size_t pos = _size;
-			if (pos > n)
+			
+			if (n < _size)
 			{
-				_str[n] = '\0';
+				// 删除数据 -- 保留前n个
+				_size = n;
+				_str[_size] = '\0';
 			}
-			if (pos < n)
+			else if(n > _size)
 			{
-				if (n+1 > _capacity)
+				if (n > _capacity)
 				{
-					reserve(n+1);
+					reserve(n);
 				}
-				size_t tmp = pos;
-				while (tmp < n)
+				size_t tmp = _size;
+				while (tmp < n) 
 				{
 					_str[tmp] = ch;
 					++tmp;
 				}
-				_str[tmp] = '\0';
+				_size = n;
+				_str[_size] = '\0';
 			}
-			
 		}
 		void reserve(size_t n)
 		{
-			char* tmp = new char[n + 1];
-			strcpy(tmp, _str);
-			delete[] _str;
-			_str = tmp;
-			_capacity = n;
+			if (n > _capacity)
+			{
+				char* tmp = new char[n + 1];
+				strcpy(tmp, _str);
+				delete[] _str;
+				_str = tmp;
+				_capacity = n;
+			}
+			
 		}
 		void push_back(char ch)
 		{
-			if (_size + 1 > _capacity)
+			/*if (_size + 1 > _capacity)
 			{
 				reserve(2 * _capacity);
 			}
 			_str[_size] = ch;
 			++_size;
 
-			_str[_size] = '\0';
+			_str[_size] = '\0';*/
+
+			insert(_size, ch);
 		}
 		void append(const char* str)
 		{
-			size_t len = strlen(str);
+			/*size_t len = strlen(str);
 			if (_size + len > _capacity)
 			{
 				reserve(_size+len);
 			}
 			strcpy(_str+_size, str);
-			_size += len;
+			_size += len;*/
+
+			insert(_size, str);
 		}
 		string& operator+=(char ch)
 		{
@@ -180,31 +194,101 @@ namespace janonez
 			append(str);
 			return *this;
 		}
-		void insert(size_t pos, char ch)
+		string& insert(size_t pos, char ch)
 		{
 			assert(pos<=_size);
 			if (_size + 1 > _capacity)
 			{
 				reserve(2 * _capacity);
 			}
-			size_t end = _size;
-			++_size;
+			/*size_t end = _size;
 			while (end >= pos && end != npos)
 			{
 				_str[end + 1] = _str[end];
 				--end;
+			}*/
+			size_t end = _size + 1;
+			while (end > pos)
+			{
+				_str[end] = _str[end - 1];
+				--end;
 			}
+			++_size;
 			_str[pos] = ch;
+			return *this;
 		}
 
-		void insert(size_t pos, const char* str)
+		string& insert(size_t pos, const char* str)
 		{
-
+			assert(pos <= _size);
+			size_t len = strlen(str);
+			size_t end = _size + len;
+			if (end > _capacity)
+			{
+				reserve(len + _size);
+			}
+			while (end > pos+len-1)
+			{
+				_str[end] = _str[end - len];
+				--end;
+			}
+			/*for (int i = 0; i < len; ++i)
+			{
+				_str[pos + i] = str[i];
+			}*/
+			strncpy(_str, str, len);
+			_size += len;
+			return *this;
 		}
 
-		void erase(size_t pos, size_t len = npos)
+		string& erase(size_t pos, size_t len = npos)
 		{
+			assert(pos < _size);
+			if (pos + len >= _size || len == npos)
+			{
+				_str[pos] = '\0';
+				_size = pos;
+			}
+			else
+			{
+				strcpy(_str + pos, _str + pos + len);
+				_size -= len;
+			}
+			return *this;
+		}
 
+		//s1.swap(s2);
+		void swap(string& str)
+		{
+			std::swap(_str, str._str);
+			std::swap(_capacity, str._capacity);
+			std::swap(_size, str._size);
+		}
+
+		size_t find(char ch,size_t pos = 0)
+		{
+			assert(pos < _size);
+			for (size_t i = pos; i < _size; ++i)
+			{
+				if (ch == _str[i])
+					return i;
+			}
+			return npos;
+		}
+		size_t find(const char* str, size_t pos = 0)
+		{
+			assert(pos < _size);
+			char* p = strstr(_str + pos, str);
+			if (p == nullptr)
+				return npos;
+			else
+				return p - _str;
+		}
+
+		void clear()
+		{
+			_str[0] = '\0';
+			_size = 0;
 		}
 
 	private:
@@ -216,6 +300,44 @@ namespace janonez
 		//static const size_t npos = -1;
 	};
 	const size_t string::npos = -1;
+
+	ostream& operator<<(ostream& out, const string& str)
+	{
+		for (auto ch : str)
+		{
+			out << ch;
+		}
+		return out;
+	}
+
+	istream& operator>>(istream& in, string& str)
+	{
+		str.clear();
+		char ch = in.get();
+		char buff[128];
+		size_t i = 0;
+		while (ch != ' ' && ch != '\n')
+		{
+			buff[i++] = ch;
+			if (i == 127)
+			{
+				buff[127] = '\0';
+				i = 0;
+				str += buff;
+			}
+
+			ch = in.get();
+		}
+
+		if (i != 0)
+		{
+			buff[i] = '\0';
+			str += buff;
+		}
+
+		return in;
+	}
+
 
 	void Print(const string& str)
 	{
@@ -343,11 +465,57 @@ namespace janonez
 
 	void test_string6()
 	{
-		string s1("hello world");
-		//s1.resize(5);
-		//s1.resize(19, 'x');
-		s1.insert(5, 'x');
-		s1.insert(0, 'x');
+		string s1("hello world111111111111111111111");
+		cout << s1.capacity() << endl;
+		s1.reserve(10);
 		cout << s1.c_str() << endl;
+		cout << s1.capacity() << endl;
+	}
+
+	void test_string7()
+	{
+		string s1("hello world");
+		s1.resize(5);
+		s1.resize(19, 'x');
+		cout << s1.c_str() << endl;
+	}
+
+	void test_string8()
+	{
+		string s1("hello world");
+		s1.insert(0,'x');
+		
+		cout << s1.c_str() << endl;
+		s1.insert(3, "yyy");
+		cout << s1.c_str() << endl;
+		s1.insert(0, "zzz");
+		cout << s1.c_str() << endl;
+
+	}
+	
+	void test_string9()
+	{
+		string s1("hello world");
+		string s2("hello world");
+		string s3("hello world");
+		s1.erase(3, 3);
+		cout << s1.c_str() << endl;
+		s2.erase(4, 15);
+		cout << s2.c_str() << endl;
+		s3.erase(5);
+		cout << s3.c_str() << endl;
+	}
+
+	void test_string10()
+	{
+		string s1("hello world");
+		cout << s1 << endl;
+		string s2;
+		cin >> s2;
+		cout << s2 << endl;
+
+		cin >> s1;
+		cout << s1 << endl;
+
 	}
 }

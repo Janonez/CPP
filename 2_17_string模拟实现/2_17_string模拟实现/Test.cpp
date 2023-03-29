@@ -99,8 +99,11 @@ int main()
 	//janonez::test_string3();
 	//janonez::test_string4();
 	//janonez::test_string5();
-	janonez::test_string6();
-
+	//janonez::test_string6();
+	//janonez::test_string7();
+	//janonez::test_string8();
+	//janonez::test_string9();
+	//janonez::test_string10();
 
 	/*string s1("hello world");
 	cout << s1.capacity() << endl;
@@ -111,5 +114,17 @@ int main()
 	/*string s1("hello world");
 	s1.insert(s1.begin()+5, 'x');
 	cout << s1 << endl;*/
+
+	janonez::string s1;
+	std::string s2;
+	cout << sizeof(s1) << endl; //24
+	cout << sizeof(s2) << endl; // 40 
+
+	janonez::string s3("11111");  // 24
+	std::string s4("1111111"); // 40
+
+	cout << sizeof(s3) << endl;
+	cout << sizeof(s4) << endl;
+
 	return 0;
 }
