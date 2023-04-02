@@ -130,7 +130,7 @@ int main()
 {
 	test_vector4();
 	
-	//TestVectorExpand();
+	TestVectorExpand();
 
 	return 0;
 }
