@@ -11,10 +11,41 @@ namespace Janonez
 		typedef const T* const_iterator;
 
 		vector()
-			: _start(nullptr)
-			, _finish(nullptr)
-			, _end_of_storage(nullptr)
 		{}
+
+		vector(size_t n, const T& val = T())
+		{
+			reserve(n);
+			for (size_t i = 0; i < n; ++i)
+			{
+				push_back(val);
+			}
+		}
+
+		vector(int n, const T& val = T())
+		{
+			reserve(n);
+			for (int i = 0; i < n; ++i)
+			{
+				push_back(val);
+			}
+		}
+
+		template<class InputIterator>
+		vector(InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			{
+				push_back(*first);
+				++first;
+			}
+		}
+
+		~vector()
+		{
+			delete[] _start;
+			_start = _finish = _end_of_storage = nullptr;
+		}
 
 		iterator begin()
 		{
@@ -116,7 +147,7 @@ namespace Janonez
 			return pos;
 		}
 
-		void erase(iterator pos)
+		iterator erase(iterator pos)
 		{
 			assert(pos >= _start && pos < _finish);
 			
@@ -128,6 +159,8 @@ namespace Janonez
 			}
 
 			--_finish;
+
+			return pos;
 		}
 
 		size_t size() const
@@ -160,9 +193,9 @@ namespace Janonez
 		}
 
 	private:
-		iterator _start;
-		iterator _finish;
-		iterator _end_of_storage;
+		iterator _start = nullptr;
+		iterator _finish = nullptr;
+		iterator _end_of_storage = nullptr;
 
 	};
 
@@ -302,6 +335,94 @@ namespace Janonez
 		}
 
 		for (auto e : v1)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+	}
+
+	void test_vector5()
+	{
+		vector<int> v1;
+		v1.push_back(10);
+		v1.push_back(2);
+		v1.push_back(3);
+		v1.push_back(4);
+		v1.push_back(40);
+		
+		//É¾³ýÅ¼Êý
+		vector<int>::iterator it = v1.begin();
+		while (it != v1.end())
+		{
+			if(*it % 2 == 0)
+				it = v1.erase(it);
+			else
+				++it;
+		}
+		
+		for (auto e : v1)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+	}
+
+	void test_vector6()
+	{
+		vector<int> v1(10,5);
+		
+		for (auto e : v1)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		vector<int> v2(v1.begin()+1, v1.end()-1);
+
+		for (auto e : v2)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		std::string s1("hello");
+		vector<int> v3(s1.begin(), s1.end());
+		for (auto e : v3)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		int a[] = { 100,10,2,20,5 };
+		for (auto e : a)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+		vector<int> v4(a, a + 5);
+		for (auto e : v4)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		v1.insert(v1.begin(), 30);
+		for (auto e : v1)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		sort(v1.begin(), v1.end());
+		for (auto e : v1)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		sort(a, a + sizeof(a) / sizeof(int), greater<int>());
+
+		for (auto e : a)
 		{
 			cout << e << " ";
 		}
