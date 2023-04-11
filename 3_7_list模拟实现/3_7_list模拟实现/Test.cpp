@@ -6,8 +6,8 @@ using namespace std;
 
 int main()
 {
-	Janonez::list_test3();
-
-    
+	Janonez::list_test5();
+	
+	
 	return 0;
 }

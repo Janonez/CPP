@@ -159,11 +159,74 @@ namespace Janonez
 			return const_iterator(_head);
 		}
 
-		list()
+		void empty_init()
 		{
 			_head = new node;
 			_head->_next = _head;
 			_head->_prev = _head;
+		}
+
+		list()
+		{
+			empty_init();
+		}
+
+		/*list(list<T>& lt)
+		{
+			empty_init();
+			for (auto e : lt)
+			{
+				push_back(e);
+			}
+		}*/
+
+		template <class Iterator>
+		list(Iterator first, Iterator last)
+		{
+			empty_init();
+
+			while (first != last)
+			{
+				push_back(*first);
+				++first;
+			}
+		}
+
+		void swap(list<T>& tmp)
+		{
+			std::swap(_head, tmp._head);
+		}
+
+		list(const list<T>& lt)
+		{
+			empty_init();
+
+			list tmp(lt.begin(), lt.end());
+			swap(tmp);
+		}
+
+		list<T>& operator=(list<T> lt)
+		{
+			swap(lt);
+			return *this;
+		}
+
+		~list()
+		{
+			clear();
+			delete _head;
+			_head = nullptr;
+		}
+
+		void clear()
+		{
+			iterator it = begin();
+			while (it != end())
+			{
+				it = erase(it);
+				//erase(it++);
+				// 后置++编译器会生成一个临时空间进行存储,最后返回的也是临时空间的值
+			}
 		}
 
 		void push_back(const T& x)
@@ -195,7 +258,7 @@ namespace Janonez
 			cur->_prev = new_node;
 		}
 
-		void erase(iterator pos)
+		iterator erase(iterator pos)
 		{
 			assert(pos != end());
 			node* prev = pos._node->_prev;
@@ -206,6 +269,7 @@ namespace Janonez
 
 			delete pos._node;
 			
+			return iterator(next);//删除pos之后返回下一个节点的迭代器
 		}
 		void pop_back()
 		{
@@ -334,6 +398,60 @@ namespace Janonez
 
 		lt.pop_front();
 		for (auto e : lt)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+	}
+
+	void list_test4()
+	{
+		list<int> lt;
+		lt.push_back(1);
+		lt.push_back(2);
+		lt.push_back(3);
+		lt.push_back(4);
+
+
+		for (auto e : lt)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		lt.clear();
+		for (auto e : lt)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		lt.push_back(4);
+		lt.push_back(3);
+		lt.push_back(2);
+		lt.push_back(1);
+		for (auto e : lt)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+	}
+
+	void list_test5()
+	{
+		list<int> lt;
+		lt.push_back(1);
+		lt.push_back(2);
+		lt.push_back(3);
+		lt.push_back(4);
+		for (auto e : lt)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+
+		list<int> lt2(lt);
+		for (auto e : lt2)
 		{
 			cout << e << " ";
 		}
