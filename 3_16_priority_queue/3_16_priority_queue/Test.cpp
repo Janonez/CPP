@@ -41,7 +41,7 @@ int main()
 	cout << lessfunc(1, 2) << endl;
 	cout << lessfunc(5, 2) << endl;*/
 
-	//Janonez::test_my_priority_queue();
+	Janonez::test_my_priority_queue();
 	Janonez::test_my_priority_queue2();
 	return 0;
 }
