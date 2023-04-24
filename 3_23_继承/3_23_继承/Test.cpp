@@ -206,39 +206,99 @@ using namespace std;
 
 // 基类定义了static静态成员，则整个继承体系里面只有一个这样的成员。
 // 无论派生出多少个子类，都只有一个static成员实例。
+//class Person
+//{
+//public:
+//	Person() { ++_count; }
+////protected:
+//	string _name; // 姓名
+//public:
+//	static int _count; // 统计人的个数。
+//};
+//int Person::_count = 0;
+//
+//class Student : public Person
+//{
+//protected:
+//	int _stuNum; // 学号
+//};
+//class Graduate : public Student {
+//protected:
+//	string _seminarCourse; // 研究科目
+//};
+//int main()
+//{
+//	Person p;
+//	Student s;
+//	/*cout << &(p._name) << endl;
+//	cout << &(s._name) << endl;
+//	
+//	cout << &(p._count) << endl;
+//	cout << &(s._count) << endl;*/
+//
+//	Graduate g1;
+//	Graduate g2;
+//
+//	cout << Person::_count << endl;
+//	return 0;
+//}
+
+// 实现一个不能被继承的类
+//class A
+//{
+//public:
+//	static A CreateObj()
+//	{
+//		return A();
+//	}
+//private:
+//	A()
+//	{}
+//};
+//
+//class B : public A
+//{};
+//
+//int main()
+//{
+//	A::CreateObj();
+//
+//	//B bb;
+//
+//	return 0;
+//}
+
 class Person
 {
 public:
-	Person() { ++_count; }
-//protected:
 	string _name; // 姓名
-public:
-	static int _count; // 统计人的个数。
+	//int _age;
+	//int _tel;
+	//int _address;
 };
-int Person::_count = 0;
-
-class Student : public Person
+class Student : virtual public Person
 {
 protected:
-	int _stuNum; // 学号
+	int _num; //学号
 };
-class Graduate : public Student {
-protected:
-	string _seminarCourse; // 研究科目
-};
-int main()
+class Teacher : virtual public Person
 {
-	Person p;
-	Student s;
-	/*cout << &(p._name) << endl;
-	cout << &(s._name) << endl;
-	
-	cout << &(p._count) << endl;
-	cout << &(s._count) << endl;*/
+protected:
+	int _id; // 职工编号
+};
+class Assistant : public Student, public Teacher
+{
+protected:
+	string _majorCourse; // 主修课程
+};
 
-	Graduate g1;
-	Graduate g2;
+void main()
+{
+	// 这样会有二义性无法明确知道访问的是哪一个
+	Assistant a;
+	a._name = "张三";
 
-	cout << Person::_count << endl;
-	return 0;
+	// 数据冗余 和 二义性
+	a.Student::_name = "小张";
+	a.Teacher::_name = "老张";
 }
