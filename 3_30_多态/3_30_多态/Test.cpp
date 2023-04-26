@@ -278,50 +278,50 @@ using namespace std;
 //}
 
 
-class Base
-{
-public:
-	virtual void Func1()
-	{
-		cout << "Base::Func1()" << endl;
-	}
-
-	virtual void Func2()
-	{
-		cout << "Base::Func2()" << endl;
-	}
-
-	void Func3()
-	{
-		cout << "Base::Func3()" << endl;
-	}
-
-private:
-	int _b = 1;
-};
-
-class Derive : public Base
-{
-public:
-	virtual void Func1()
-	{
-		cout << "Derive::Func1()" << endl;
-	}
-private:
-	int _d = 2;
-};
-
-int main()
-{
-	Base b1;
-	Base b2;
-	Base b3;
-
-	Derive d;
-
-	b1.Func1();
-	b1.Func3();
-
-
-	return 0;
-}
+//class Base
+//{
+//public:
+//	virtual void Func1()
+//	{
+//		cout << "Base::Func1()" << endl;
+//	}
+//
+//	virtual void Func2()
+//	{
+//		cout << "Base::Func2()" << endl;
+//	}
+//
+//	void Func3()
+//	{
+//		cout << "Base::Func3()" << endl;
+//	}
+//
+//private:
+//	int _b = 1;
+//};
+//
+//class Derive : public Base
+//{
+//public:
+//	virtual void Func1()
+//	{
+//		cout << "Derive::Func1()" << endl;
+//	}
+//private:
+//	int _d = 2;
+//};
+//
+//int main()
+//{
+//	Base b1;
+//	Base b2;
+//	Base b3;
+//
+//	Derive d;
+//
+//	b1.Func1();
+//	b1.Func3();
+//
+//
+//	return 0;
+//}
