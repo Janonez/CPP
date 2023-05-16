@@ -126,8 +126,53 @@ void test_map2()
 	dict.insert(make_pair("sort", "ÅÅĞò"));
 	dict.insert(make_pair("string", "×Ö·û´®"));
 	dict.insert(make_pair("count", "¼ÆÊı"));
-	dict.insert(make_pair("string", "(×Ö·û´®)")); // ²åÈëÊ§°Ü
 	
+	dict.insert(make_pair("string", "(×Ö·û´®)")); // ²åÈëÊ§°Ü
+
+	dict["left"];//²åÈë
+	dict["right"] = "ÓÒ±ß";//²åÈë+ĞŞ¸Ä
+	dict["string"] = "(×Ö·û´®)";//ĞŞ¸Ä
+	cout << dict["string"] << endl;
+	cout << dict["sort"] << endl;
+	
+	map<string, string>::iterator dit = dict.begin();
+	while (dit != dict.end())
+	{
+		// cout << (*dit).first << ":" << (*dit).second << endl;
+		cout << dit->first << ":" << dit->second << endl;
+		++dit;
+	}
+	cout << endl;
+}
+
+void test_map3()
+{
+	string arr[] = { "Î÷¹Ï", "Î÷¹Ï", "Æ»¹û", "Î÷¹Ï", "Æ»¹û", "Æ»¹û", "Î÷¹Ï", "Æ»¹û", "Ïã½¶", "Æ»¹û", "Ïã½¶", "Àæ" };
+	map<string, int> countMap;
+
+	/*for (auto& e : arr)
+	{
+		auto ret = countMap.find(e);
+		if (ret == countMap.end())
+		{
+			countMap.insert(make_pair(e, 1));
+		}
+		else
+		{
+			ret->second++;
+		}
+	}*/
+
+	for (auto& e : arr)
+	{
+		countMap[e]++;
+	}
+
+	for (auto& kv : countMap)
+	{
+		cout << kv.first << ":" << kv.second << endl;
+	}
+
 }
 
 int main()
@@ -136,6 +181,8 @@ int main()
 	//test_set2();
 	//test_set3();
 
-	test_map1();
+	//test_map1();
+	//test_map2();
+	test_map3();
 	return 0;
 }
