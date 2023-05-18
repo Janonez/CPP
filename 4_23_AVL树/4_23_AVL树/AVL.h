@@ -90,7 +90,7 @@ public:
 			}
 			else if(parent->_bf == 2 || parent->_bf == -2)
 			{
-				// 旋转处理，让子树平衡
+				// 旋转处理-让子树平衡
 
 				break;
 			}
