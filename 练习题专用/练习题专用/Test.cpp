@@ -96,10 +96,86 @@ using namespace std;
 //    return 0;
 //}
 
-#include <stdio.h>
-int main() {
-	long long a = 1, b = 2, c = 3;
-	//printf("%d %d %d\n", a, b, c);
-	printf("%p %p %p\n", &a, &b, &c);
-	return 0;
+//#include <stdio.h>
+//int main() {
+//	long long a = 1, b = 2, c = 3;
+//	//printf("%d %d %d\n", a, b, c);
+//	printf("%p %p %p\n", &a, &b, &c);
+//	return 0;
+//}
+
+//#include <iostream>
+//
+//using namespace std;
+//
+//int main()
+//{
+//    int n;
+//    cin >> n;
+//    int cur = 0; 
+//    int ret = 0;
+//    while (n)
+//    {
+//        if ((n & 1) == 1)
+//        {
+//            cur++;
+//        }
+//        else
+//        {
+//            if (cur > ret)
+//            {
+//                ret = cur;
+//                cur = 0;
+//            }
+//        }
+//        n = n >> 1;
+//    }
+//    if (cur > ret)
+//        ret = cur;
+//    cout << ret;
+//    return 0;
+//}
+
+#include <iostream>
+#include <cmath>
+using namespace std;
+// 素数：质数是指在大于1的自然数中，除了1和它本身以外不再有其他因数的自然数。
+bool isPrime(int n)
+{
+    int m = sqrt(n);
+    int i;
+    for (i = 2; i <= m; ++i)
+    {
+        if (n % i == 0)
+            break;
+    }
+    if (i > m)
+        return true;
+    else
+        return false;
+}
+int main()
+{
+    int n = 0;
+    cin >> n;
+    int tmp = n - 2;
+    int diff = n;
+    int cur = 0;
+    int ret = 0;
+    while (tmp >= (n / 2))
+    {
+        if (isPrime(tmp) && isPrime(n - tmp))
+        {
+            cur = tmp - (n - tmp);
+            if (cur < diff)
+            {
+                ret = tmp;
+                diff = cur;
+                cur = 0;
+            }
+        }
+        tmp--;
+    }
+    cout << ret << endl << n - ret << endl;
+    return 0;
 }
