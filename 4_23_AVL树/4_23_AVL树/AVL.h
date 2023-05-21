@@ -1,6 +1,7 @@
 #pragma once
+#include <assert.h>
 template<class K,class V>
-class AVLTreeNode
+struct AVLTreeNode
 {
 	AVLTreeNode<K, V>* _left;
 	AVLTreeNode<K, V>* _right;
@@ -23,7 +24,7 @@ class AVLTree
 {
 	typedef AVLTreeNode<K, V> Node;
 public:
-	bool insert(const pair<K, V>& kv)
+	bool Insert(const pair<K, V>& kv)
 	{
 		if (_root == nullptr)
 		{
@@ -91,7 +92,16 @@ public:
 			else if(parent->_bf == 2 || parent->_bf == -2)
 			{
 				// 旋转处理-让子树平衡
-
+				if (parent->_bf == 2 && cur->_bf == 1)
+					RotateL(parent);
+				else if (parent->_bf == -2 && cur->_bf == -1)
+					RotateR(parent);
+				else if (parent->_bf == -2 && cur->_bf == 1)
+					RotateLR(parent);
+				else if (parent->_bf == 2 && cur->_bf == -1)
+					RotateRL(parent);
+				else
+					assert(false);
 				break;
 			}
 			else
@@ -100,6 +110,168 @@ public:
 			}
 		}
 		return true;
+	}
+	bool IsBalance()
+	{
+		return _IsBalance(_root);
+	}
+	
+private:
+	int _Height(Node* root)
+	{
+		if (root == NULL)
+			return 0;
+
+		int leftHeight = _Height(root->_left);
+		int rightHeight = _Height(root->_right);
+
+		return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
+	}
+	bool _IsBalance(Node* root)
+	{
+		// 空树也是AVL树
+		if (root == nullptr) return true;
+		// 计算root节点的平衡因子：即pRoot左右子树的高度差
+		int leftHeight = _Height(root->_left);
+		int rightHeight = _Height(root->_right);
+		int diff = rightHeight - leftHeight;
+		// 如果计算出的平衡因子与pRoot的平衡因子不相等，或者
+		// pRoot平衡因子的绝对值超过1，则一定不是AVL树
+		if (diff != root->_bf || (diff > 1 || diff < -1))
+			return false;
+		// pRoot的左和右如果都是AVL树，则该树一定是AVL树
+		return _IsBalance(root->_left) && _IsBalance(root->_right);
+	}
+	// 左单旋
+	void RotateL(Node* parent)
+	{
+		// 定义需要旋转的节点
+		Node* subR = parent->_right;
+		Node* subRL = subR->_left;
+		// 旋转
+		parent->_right = subRL;
+		// 判断是否为空，更新父子关系
+		if (subRL)
+			subRL->_parent = parent;
+
+		// 记录parent的父节点
+		Node* ppnode = parent->_parent;
+
+		subR->_left = parent;
+		parent->_parent = subR;
+		// 判断父节点的父是否存在
+		if (ppnode)
+		{
+			// 判断parent节点是ppnode的左右
+			if (ppnode->_left == parent)
+			{
+				ppnode->_left = subR;
+			}
+			else
+			{
+				ppnode->_right = subR;
+			}
+			subR->_parent = ppnode;
+		}
+		else
+		{
+			_root = subR;
+			_root->_parent = nullptr;
+		}
+		parent->_bf = subR->_bf = 0;
+	}
+
+	// 右单旋
+	void RotateR(Node* parent)
+	{
+		Node* subL = parent->_left;
+		Node* subLR = subL->_right;
+
+		parent->_left = subLR;
+		if (subLR)
+			subLR->_parent = parent;
+		Node* ppnode = parent->_parent;
+		subL->_right = parent;
+		parent->_parent = subL;
+		if (ppnode)
+		{
+			if (ppnode->_left == parent)
+				ppnode->_left = subL;
+			else
+				ppnode->_right = subL;
+		}
+		else
+		{
+			_root = subL;
+		}
+		subL->_parent = ppnode;
+
+		subL->_bf = parent->_bf = 0;
+	}
+
+	void RotateLR(Node* parent)
+	{
+		Node* subL = parent->_left;
+		Node* subLR = subL->_right;
+		int bf = subLR->_bf;
+		RotateL(subL);
+		RotateR(parent);
+		if (bf == -1)
+		{
+			subLR->_bf = 0;
+			subL->_bf = 0;
+			parent->_bf = 1;
+		}
+		else if (bf == 1)
+		{
+			subLR->_bf = 0;
+			subL->_bf = -1;
+			parent->_bf = 0;
+		}
+		else if (bf == 0)
+		{
+			subLR->_bf = 0;
+			subL->_bf = 0;
+			parent->_bf = 0;
+		}
+		else
+		{
+			assert(false);
+		}
+
+	}
+
+	void RotateRL(Node* parent)
+	{
+		Node* subR = parent->_right;
+		Node* subRL = subR->_left;
+		int bf = subRL->_bf;
+		RotateR(subR);
+		RotateL(parent);
+
+		if (bf == -1)
+		{
+			subRL->_bf = 0;
+			subR->_bf = 1;
+			parent->_bf = 0;
+		}
+		else if (bf == 1)
+		{
+			subRL->_bf = 0;
+			subR->_bf = 0;
+			parent->_bf = -1;
+		}
+		else if (bf == 0)
+		{
+			subRL->_bf = 0;
+			subR->_bf = 0;
+			parent->_bf = 0;
+		}
+		else
+		{
+			assert(false);
+		}
+
 	}
 private:
 	Node* _root = nullptr;
