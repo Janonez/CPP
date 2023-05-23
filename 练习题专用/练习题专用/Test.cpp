@@ -181,29 +181,75 @@ using namespace std;
 //}
 
 
+//#include <iostream>
+//#include <vector>
+//#include <cmath>
+//#include <algorithm>
+//using namespace std;
+//void Div(int num, vector<int>& a)
+//{
+//    for (int i = 2; i <= sqrt(num); ++i)
+//    {
+//        if (num % i == 0)
+//        {
+//            a.push_back(i);
+//            if (num / i != i)
+//            {
+//                a.push_back(num / i);
+//            }
+//        }
+//        
+//    }
+//    sort(a.begin(), a.end());
+//    //     for(auto s: a)
+//    //     {
+//    //         cout << s << " ";
+//    //     }
+//}
+//int main()
+//{
+//    int n, m = 0;
+//    cin >> n >> m;
+//    int tmp = n;
+//    int count = 0;
+//    while (tmp != m)
+//    {
+//        // 寻找最大的约数
+//        vector<int> a;
+//        Div(tmp, a);
+//        int i = a.size() - 1;
+//        while (i)
+//        {
+//            if (tmp + a[i] > m)
+//                i--;
+//            else
+//                break;
+//        }
+//        tmp += a[i];
+//        count++;
+//    }
+//    cout << count;
+//    return 0;
+//}
+
+
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
-int Div(int num)
-{
-    int div = num - 1;
-    while (num % (div))
-    {
-        div--;
-    }
-    return div;
-}
 int main()
 {
-    int n, m = 0;
-    cin >> n >> m;
-    int tmp = n;
-    int count = 0;
-    while (tmp != m)
+    int n = 0;
+    cin >> n;
+    vector<int> arr;
+    for (int i = 0; i < n; ++i)
     {
-        // 寻找最大的约数
-        tmp += Div(tmp);
-        count++;
+        cin >> arr[i];
     }
-    cout << count;
+    sort(arr.begin(), arr.end());
+    for (auto a : arr)
+    {
+        cout << a << " ";
+    }
     return 0;
 }
