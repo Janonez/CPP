@@ -1,5 +1,6 @@
 #pragma once
 #include <assert.h>
+#include <time.h>
 template<class K,class V>
 struct AVLTreeNode
 {
@@ -116,6 +117,15 @@ public:
 		return _IsBalance(_root);
 	}
 	
+	void InOrder()
+	{
+		_InOrder(_root);
+		cout << endl;
+	}
+	int Height()
+	{
+		return _Height(_root);
+	}
 private:
 	int _Height(Node* root)
 	{
@@ -130,17 +140,19 @@ private:
 	bool _IsBalance(Node* root)
 	{
 		// 空树也是AVL树
-		if (root == nullptr) return true;
-		// 计算root节点的平衡因子：即pRoot左右子树的高度差
+		if (root == nullptr) 
+			return true;
+		// 计算root节点的平衡因子：即root左右子树的高度差
 		int leftHeight = _Height(root->_left);
 		int rightHeight = _Height(root->_right);
 		int diff = rightHeight - leftHeight;
-		// 如果计算出的平衡因子与pRoot的平衡因子不相等，或者
-		// pRoot平衡因子的绝对值超过1，则一定不是AVL树
-		if (diff != root->_bf || (diff > 1 || diff < -1))
+		if (diff != root->_bf)
+		{
+			cout << root->_kv.first << "节点平衡因子异常" << endl;
 			return false;
-		// pRoot的左和右如果都是AVL树，则该树一定是AVL树
-		return _IsBalance(root->_left) && _IsBalance(root->_right);
+		}
+		
+		return abs(diff) < 2 && _IsBalance(root->_left) && _IsBalance(root->_right);
 	}
 	// 左单旋
 	void RotateL(Node* parent)
@@ -273,6 +285,50 @@ private:
 		}
 
 	}
+
+	void _InOrder(Node* root)
+	{
+		if (root == nullptr)
+			return;
+		_InOrder(root->_left);
+		cout << root->_kv.first << " ";
+		_InOrder(root->_right);
+	}
 private:
 	Node* _root = nullptr;
 };
+
+void Test_AVLTree1()
+{
+	//int arr[] = {16, 3, 7, 11, 9, 26, 18, 14, 15};
+	int arr[] = { 4, 2, 6, 1, 3, 5, 15, 7, 16, 14 };
+	AVLTree<int, int> t1;
+
+	for (auto a : arr)
+	{
+		t1.Insert(make_pair(a, a));
+		cout << a << "插入：" << t1.IsBalance() << endl;
+	}
+
+	t1.InOrder();
+
+	cout << t1.IsBalance() << endl;
+}
+
+void Test_AVLTree2()
+{
+	srand(time(0));
+	const size_t N = 5000000;
+	AVLTree<int, int> t;
+	for (size_t i = 0; i < N; ++i)
+	{
+		size_t x = rand() + i;
+		t.Insert(make_pair(x, x));
+		//cout << t.IsBalance() << endl;
+	}
+
+	//t.Inorder();
+
+	cout << t.IsBalance() << endl;
+	cout << t.Height() << endl;
+}
