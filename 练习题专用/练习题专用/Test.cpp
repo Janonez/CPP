@@ -233,23 +233,290 @@ using namespace std;
 //}
 
 
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//using namespace std;
+//int main()
+//{
+//    int n = 0;
+//    cin >> n;
+//    vector<int> arr;
+//    for (int i = 0; i < n; ++i)
+//    {
+//        cin >> arr[i];
+//    }
+//    sort(arr.begin(), arr.end());
+//    for (auto a : arr)
+//    {
+//        cout << a << " ";
+//    }
+//    return 0;
+//}
+//
+//inline const string& shorterString(const string& s1, const string& s2)
+//{
+//    return s1.size() <= s2.size() ? s1 : s2;
+//}
+//
+//int main()
+//{
+//    string s1, s2, s3, s4, s5, s6;
+//    // ...
+//    cout<< (s1.size() <= s2.size() ? s1 : s2) << endl;
+//    cout<< (s3.size() <= s4.size() ? s3 : s4) << endl;
+//    cout<< (s5.size() <= s6.size() ? s5 : s6) << endl;
+//    // ...
+//    return 0;
+//}
+
+
+//#include <iostream>
+//#include <vector>
+//
+//using namespace std;
+//
+//void shuffle_cards(vector<int>& v1, vector<int>& v2, vector<int>* ret)
+//{
+//    vector<int>::reverse_iterator rit1 = v1.rbegin();
+//    vector<int>::reverse_iterator rit2 = v2.rbegin();
+//    vector<int> result = *ret;
+//    while (rit1 != v1.rend() || rit2 != v2.rend())
+//    {
+//        result.push_back(*rit2);
+//        result.push_back(*rit1);
+//        ++rit1;
+//        ++rit2;
+//    }
+//}
+//
+//int main()
+//{
+//    int T = 0;
+//    cin >> T;
+//    while (T--)
+//    {
+//        int n, k;
+//        cin >> n >> k;
+//        vector<int> v1;
+//        vector<int> v2;
+//        for (int i = 0; i < n; ++i)
+//        {
+//            int tmp = 0;
+//            cin >> tmp;
+//            v1.push_back(tmp);
+//        }
+//        for (int i = 0; i < n; ++i)
+//        {
+//            int tmp = 0;
+//            cin >> tmp;
+//            v2.push_back(tmp);
+//        }
+//        vector<int> ret;
+//        while (k--)
+//        {
+//            shuffle_cards(v1, v2,&ret);
+//        }
+//        for (int i = 0; i < ret.size(); ++i)
+//        {
+//            cout << ret[i] << " ";
+//        }
+//        cout << endl;
+//    }
+//    return 0;
+//}
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>
+//using namespace std;
+//
+//vector<int>& shuffle_cards(vector<int>& v, int n)
+//{
+//    size_t pos1 = n - 1;
+//    size_t pos2 = 2 * n - 1;
+//    static vector<int> ret;
+//    while (pos1)
+//    {
+//        ret.push_back(v[pos2]);
+//        ret.push_back(v[pos1]);
+//        --pos2;
+//        --pos1;
+//    }
+//    reverse(ret.begin(), ret.end());
+//    return ret;
+//}
+//
+//int main()
+//{
+//    int T = 0;
+//    cin >> T;
+//    while (T--)
+//    {
+//        int n, k;
+//        cin >> n >> k;
+//        vector<int> v;
+//        for (int i = 0; i < 2 * n; ++i)
+//        {
+//            int tmp = 0;
+//            cin >> tmp;
+//            v.push_back(tmp);
+//        }
+//        while (k--)
+//        {
+//            v = shuffle_cards(v, n);
+//        }
+//        for (int i = 0; i < 2 * n; ++i)
+//        {
+//            cout << v[i] << " ";
+//        }
+//        cout << endl;
+//    }
+//    return 0;
+//}
+
+//#include <iostream>
+//#include <string>
+//#include <vector>
+//using namespace std;
+//int pageUp(int select, int n, int* pos)
+//{
+//    if (*pos == 0) // 当前在第一行，往前翻有两种情况
+//    {
+//        if (n <= 4)// 如果总数小于4个，直接翻到最后一行
+//        {
+//            *pos = n-1;
+//        }
+//        else // 如果总数大于四个，分两种情况
+//        {
+//            if (select == 1)// 当前是1，翻到最后一个数，最后一个位置
+//            {
+//                *pos = 3;
+//            }
+//            // 当前不是1，-1，还在第一个位置
+//        }
+//    }
+//    else // 不在第一行，直接往前移动一行
+//    {
+//        *pos -= 1;
+//    }
+//    if (select == 1)
+//        return n;
+//    else
+//        return select - 1;
+//}
+//int pageDown(int select, int n, int* pos)
+//{
+//    int end = n >= 4 ? 3 : n - 1;
+//    if (*pos == end) // 当前在最后行，往前翻有两种情况
+//    {
+//        if (n <= 4)// 如果总数小于4个，直接翻到第一行
+//        {
+//            *pos = 0;
+//        }
+//        else // 如果总数大于四个，分两种情况
+//        {
+//            if (select == n)// 当前是最后一个值，翻到第一个数，第一个位置
+//            {
+//                *pos = 0;
+//            }
+//            // 当前不是最后一个值，-1，还在最后一个位置
+//        }
+//    }
+//    else // 不在最后行，直接往后移动一行
+//    {
+//        *pos += 1;
+//    }
+//
+//    if (select == n)
+//        return 1;
+//    else
+//        return select + 1;
+//}
+//void pageUD(int n, const string& str) {
+//    int select = 1;
+//    int pos = 0;
+//    for (int i = 0; i < str.size(); ++i)
+//    {
+//        if (str[i] == 'U') // 向上翻页，分两种情况
+//        {
+//            select = pageUp(select, n, &pos);
+//        }
+//        else//str[i] == 'D' 
+//        {
+//            select = pageDown(select, n, &pos);
+//        }
+//    }
+//    vector<int> v;
+//    size_t local;
+//    for (int i = 0; i < n; ++i)
+//    {
+//        v.push_back(i+1);
+//        if (v[i] == select)
+//        {
+//            local = i - pos;
+//        }
+//    }
+//    int count = 4;
+//    if (local + 4 > n - 1)
+//        count = n - 1;
+//    while (count--)
+//    {
+//        cout << v[local] << " ";
+//        local++;
+//    }
+//    cout << endl;
+//    cout << select;
+//
+//}
+//int main() {
+//    int n = 0;
+//    cin >> n;
+//    string str;
+//    cin >> str;
+//    pageUD(n, str);
+//
+//    return 0;
+//}
+
+
 #include <iostream>
-#include <vector>
 #include <algorithm>
 using namespace std;
-int main()
-{
-    int n = 0;
-    cin >> n;
-    vector<int> arr;
-    for (int i = 0; i < n; ++i)
-    {
-        cin >> arr[i];
+int gcd(int a, int b) {
+    // b是大于等于a的,b为被除数，a为除数
+    int divd = b;
+    int div = a;
+    int rem = divd % div;
+    while (rem) {
+        divd = div;
+        div = rem;
+        rem = divd % div;
     }
-    sort(arr.begin(), arr.end());
-    for (auto a : arr)
-    {
-        cout << a << " ";
-    }
+    return div;
+
+}
+int main() {
+    int a;
+    cin >> a; 
+    const int n = 3;
+        int b[n];
+        for (int i = 0; i < n; ++i) {
+            cin >> b[i];
+        }
+        int c = a;
+        for (int i = 0; i < n; ++i) {
+            // 开始打怪
+            if (c > b[i]) {
+                // 能力值c大于怪的防御力，直接打败并加防御力
+                c += b[i];
+            }
+            else {
+                // 能力值c小于怪的防御力，加最大公约数
+                c += gcd(c, b[i]);
+            }
+        }
+        cout << c << endl;
+ 
     return 0;
 }
