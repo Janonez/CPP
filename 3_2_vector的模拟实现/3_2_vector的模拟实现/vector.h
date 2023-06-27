@@ -1,6 +1,6 @@
 #pragma once
 #include <assert.h>
-
+#include <vector>
 namespace Janonez
 {
 	template<class T>
@@ -22,6 +22,27 @@ namespace Janonez
 			}
 		}
 
+		// initializer_list构造
+		// 因为编译器并不知道T::bar究竟是一个类型的名字还是一个某个变量的名字。
+		//究其根本，造成这种歧义的原因在于，编译器不明白T::bar到底是不是“模板参数的非独立名字”，简称“非独立名字”。
+		//注意，任何含有名为“bar”的项的类T，都可以被当作模板参数传入foo()函数，包括typedef类型、枚举类型或者变量等。
+		vector(initializer_list<T> il)
+		{
+			typename initializer_list<T>::iterator it = il.begin();
+			while (it != il.begin())
+			{
+				push_back(*it);
+				++it;
+			}
+		}
+		/*vector(initializer_list<T> il)
+		{
+			for (auto& e : il)
+			{
+				push_back(e);
+			}
+		}*/
+
 		vector(int n, const T& val = T())
 		{
 			reserve(n);
@@ -31,6 +52,7 @@ namespace Janonez
 			}
 		}
 
+		
 		template<class InputIterator>
 		vector(InputIterator first, InputIterator last)
 		{
@@ -423,6 +445,16 @@ namespace Janonez
 		sort(a, a + sizeof(a) / sizeof(int), greater<int>());
 
 		for (auto e : a)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+	}
+
+	void test_vector7()
+	{
+		vector<int> v1 = { 1,2,3,4,5 };
+		for (auto e : v1)
 		{
 			cout << e << " ";
 		}

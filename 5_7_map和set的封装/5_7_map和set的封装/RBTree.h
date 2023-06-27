@@ -52,7 +52,7 @@ struct __RBTreeIterator
 	{
 		if (_node->_right)
 		{
-			// 左不为空，找左子树最右节点
+			// 右不为空，找左子树最右节点
 			Node* subLeft = _node->_right;
 			while (subLeft)
 			{

@@ -6,13 +6,13 @@
 using namespace std;
 
 #include "vector.h"
-int main()
-{
-	/*vector<int>::iterator it;
-	cout << typeid(it).name() << endl;*/
-
-	Janonez::test_vector6();
-
-
-	return 0;
-}
+//int main()
+//{
+//	/*vector<int>::iterator it;
+//	cout << typeid(it).name() << endl;*/
+//
+//	Janonez::test_vector7();
+//
+//
+//	return 0;
+//}
