@@ -479,44 +479,62 @@ using namespace std;
 //    return 0;
 //}
 
-
-#include <iostream>
-#include <algorithm>
-using namespace std;
-int gcd(int a, int b) {
-    // b是大于等于a的,b为被除数，a为除数
-    int divd = b;
-    int div = a;
-    int rem = divd % div;
-    while (rem) {
-        divd = div;
-        div = rem;
-        rem = divd % div;
-    }
-    return div;
-
+//
+//#include <iostream>
+//#include <algorithm>
+//using namespace std;
+//int gcd(int a, int b) {
+//    // b是大于等于a的,b为被除数，a为除数
+//    int divd = b;
+//    int div = a;
+//    int rem = divd % div;
+//    while (rem) {
+//        divd = div;
+//        div = rem;
+//        rem = divd % div;
+//    }
+//    return div;
+//
+//}
+//int main() {
+//    int a;
+//    cin >> a; 
+//    const int n = 3;
+//        int b[n];
+//        for (int i = 0; i < n; ++i) {
+//            cin >> b[i];
+//        }
+//        int c = a;
+//        for (int i = 0; i < n; ++i) {
+//            // 开始打怪
+//            if (c > b[i]) {
+//                // 能力值c大于怪的防御力，直接打败并加防御力
+//                c += b[i];
+//            }
+//            else {
+//                // 能力值c小于怪的防御力，加最大公约数
+//                c += gcd(c, b[i]);
+//            }
+//        }
+//        cout << c << endl;
+// 
+//    return 0;
+//}
+#include <vector>
+template<typename C>
+void print2nd(const C& container)    	//打印容器内的第二元素
+{
+	if (container.size() >= 2)
+	{
+		C::const_iterator iter(container.begin());	//取得第一元素的迭代器
+		++iter;										//将iter移往第二元素
+		int value = *iter;							//将该元素复制到某个int.
+		std::cout << value;							//打印那个int.
+	}
 }
-int main() {
-    int a;
-    cin >> a; 
-    const int n = 3;
-        int b[n];
-        for (int i = 0; i < n; ++i) {
-            cin >> b[i];
-        }
-        int c = a;
-        for (int i = 0; i < n; ++i) {
-            // 开始打怪
-            if (c > b[i]) {
-                // 能力值c大于怪的防御力，直接打败并加防御力
-                c += b[i];
-            }
-            else {
-                // 能力值c小于怪的防御力，加最大公约数
-                c += gcd(c, b[i]);
-            }
-        }
-        cout << c << endl;
- 
-    return 0;
+int main()
+{
+	std::vector<int> v = { 1,2,3,4 };
+	print2nd(v);
+	return 0;
 }
