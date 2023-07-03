@@ -328,33 +328,121 @@ using namespace std;
 //	return 0;
 //}
 
-class Plus
+//class Plus
+//{
+//public:
+//	Plus (int rate = 2)
+//		: _rate(rate)
+//	{}
+//	static int plusi(int a, int b) // 静态成员函数
+//	{
+//		return a + b;
+//	}
+//	double plusd(double a, double b)// 非静态成员函数
+//	{
+//		return a + b;
+//	}
+//private:
+//	int _rate = 2;
+//};
+//
+//int main()
+//{
+//	// function<int(int, int)> p1 = &Plus::plusi;
+//	function<int(int, int)> p1 = Plus::plusi;
+//	function<double(Plus,double, double)> p2 = &Plus::plusd; // 还有this指针,需要再加个对象
+//
+//	cout << p1(10, 20) << endl;
+//	cout << p2(Plus(3),10, 20) << endl;
+//	Plus pp (3);
+//	cout << p2(pp,20, 20) << endl;
+//	return 0;
+//}
+
+////////////////////////////////bind///////////////////////////
+
+// 调整参数顺序
+
+//void Print(int a, int b)
+//{
+//	cout << a << endl;
+//	cout << b << endl;
+//}
+//
+//int main()
+//{
+//	Print(1, 2);
+//	// bind(Print, placeholders::_1, placeholders::_2); // 未调整
+//	// auto RPrint = bind(Print, placeholders::_2, placeholders::_1); //  调整
+//	function<void(int,int)> RPrint = bind(Print, placeholders::_2, placeholders::_1); //  调整
+//	RPrint(10, 20);
+//	return 0;
+//}
+
+
+// 调整参数个数
+#include <stack>
+#include <string>
+class Sub
 {
 public:
-	Plus (int rate = 2)
+	Sub(int rate)
 		: _rate(rate)
 	{}
-	static int plusi(int a, int b) // 静态成员函数
+	int func(int a, int b)
 	{
-		return a + b;
-	}
-	double plusd(double a, double b)// 非静态成员函数
-	{
-		return a + b;
+		return (a - b) * _rate;
 	}
 private:
-	int _rate = 2;
+	int _rate;
+};
+
+class Solution
+{
+public:
+	int evalRPN(vector<string>&tokens) 
+	{
+		stack<int> st;
+		map<string, function<int(int, int)>> opFuncMap =
+		{
+			{ "+", [](int i, int j) {return i + j; } },
+			{ "-", [](int i, int j) {return i - j; } },
+			{ "*", [](int i, int j) {return i * j; } },
+			{ "/", [](int i, int j) {return i / j; } },
+			{ "&", bind(&Sub::func,Sub(1),placeholders::_1, placeholders::_2)}
+		};
+		for (auto& str : tokens)
+		{
+			if (opFuncMap.find(str) != opFuncMap.end())
+			{
+				int right = st.top();
+				st.pop();
+				int left = st.top();
+				st.pop();
+				st.push(opFuncMap[str](left, right));
+			}
+			else
+			{
+				// 1、atoi itoa
+				// 2、sprintf scanf
+				// 3、stoi to_string C++11
+				st.push(stoi(str));
+			}
+		}
+		return st.top();
+	}
 };
 
 int main()
 {
-	// function<int(int, int)> p1 = &Plus::plusi;
-	function<int(int, int)> p1 = Plus::plusi;
-	function<double(Plus,double, double)> p2 = &Plus::plusd; // 还有this指针,需要再加个对象
+	function<int(Sub, int, int)> fSub = &Sub::func;
+	fSub(Sub(1), 10, 20);
 
-	cout << p1(10, 20) << endl;
-	cout << p2(Plus(3),10, 20) << endl;
-	Plus pp (3);
-	cout << p2(pp,20, 20) << endl;
+	// 调整方法
+	function<int(int, int)> fSub1 = bind(&Sub::func,Sub(1),placeholders::_1, placeholders::_2);
+	cout << fSub1(10, 20) << endl; 
+
+	function<int(Sub, int)> fSub2 = bind(&Sub::func, placeholders::_1, 100,placeholders::_2);
+	cout << fSub2(Sub(2), 20) << endl;
 	return 0;
 }
