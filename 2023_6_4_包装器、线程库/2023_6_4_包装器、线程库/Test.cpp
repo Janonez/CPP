@@ -226,44 +226,135 @@ using namespace std;
 //}
 
 // 支持两个线程交替打印，t1打印奇数，t2一个打印偶数
-#include <condition_variable>
+//#include <condition_variable>
+//int main()
+//{
+//	mutex mtx;
+//	condition_variable cv;
+//	int n = 100;
+//	int x = 1;
+//	thread t1([&, n](){
+//			while(1)
+//			{
+//				unique_lock<mutex> lock(mtx);
+//				if (x >= n)
+//					break;
+//				//if (x % 2 == 0) // 偶数阻塞
+//				//{
+//				//	cv.wait(lock);
+//				//}
+//				// false才wait阻塞
+//				cv.wait(lock, [&x]() {return x % 2 != 0; });
+//				cout << this_thread::get_id() << ": " << x << endl; 
+//				++x;
+//				cv.notify_one();
+//			}
+//		});
+//	
+//	thread t2([&, n]() {
+//			while (1)
+//			{
+//				unique_lock<mutex> lock(mtx);
+//				if (x > n)
+//					break;
+//				//if (x % 2 == 1) // 奇数阻塞
+//				//{
+//				//	cv.wait(lock);
+//				//}
+//				// false才wait阻塞
+//				cv.wait(lock, [&x]() {return x % 2 == 0; });
+//				cout << this_thread::get_id() << ": " << x << endl;
+//				++x;
+//				cv.notify_one();
+//
+//			}
+//		});
+//	
+//	t1.join();
+//	t2.join();
+//	
+//	return 0;
+//}
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// 包装器 - 可调用对象类型进行再封装适配
+// 函数指针
+// 仿函数
+// lambda
+#include <functional>
+#include <map>
+//int f(int a, int b)
+//{
+//	cout << "int f(int a, int b)" << endl;
+//	return a + b;
+//}
+//struct Functor
+//{
+//public:
+//	int operator() (int a, int b)
+//	{
+//		cout << "int operator() (int a, int b)" << endl;
+//		return a + b;
+//	}
+//};
+//
+//int main()
+//{
+//	// 函数指针声明
+//	// int(*pf1)(int, int) = f;
+//	// map<string, >
+//
+//	function<int(int, int)> f1 = f;
+//	function<int(int, int)> f2 = Functor();
+//	function<int(int, int)> f3 = [](int a, int b) {
+//		cout << "[](int a, int b) {return a + b;}" << endl;
+//		return a + b; 
+//	};
+//
+//	cout << f1(1, 2) << endl;
+//	cout << f2(10, 20) << endl;
+//	cout << f3(100, 200) << endl;
+//
+//	map<string, function<int(int, int)>> opFuncMap;
+//	opFuncMap["函数指针"] = f;
+//	opFuncMap["仿函数"] = Functor();
+//	opFuncMap["lambda"] = [](int a, int b) {
+//		cout << "[](int a, int b) {return a + b;}" << endl;
+//		return a + b;
+//	};
+//
+//	cout << opFuncMap["lambda"](1, 2) << endl;
+//	return 0;
+//}
+
+class Plus
+{
+public:
+	Plus (int rate = 2)
+		: _rate(rate)
+	{}
+	static int plusi(int a, int b) // 静态成员函数
+	{
+		return a + b;
+	}
+	double plusd(double a, double b)// 非静态成员函数
+	{
+		return a + b;
+	}
+private:
+	int _rate = 2;
+};
+
 int main()
 {
-	mutex mtx;
-	condition_variable cv;
-	int n = 100;
-	int x = 1;
-	thread t1([&, n](){
-			while(x < n)
-			{
-				unique_lock<mutex> lock(mtx);
-				if (x % 2 == 0) // 偶数
-				{
-					cv.wait(lock);
-				}
-				cout << this_thread::get_id() << ": " << x << endl; 
-				++x;
-				cv.notify_one();
-			}
-		});
-	
-	thread t2([&, n]() {
-			while (x < n)
-			{
-				unique_lock<mutex> lock(mtx);
-				if (x % 2 == 1) // 奇数
-				{
-					cv.wait(lock);
-				}
-				cout << this_thread::get_id() << ": " << x << endl;
-				++x;
-				cv.notify_one();
+	// function<int(int, int)> p1 = &Plus::plusi;
+	function<int(int, int)> p1 = Plus::plusi;
+	function<double(Plus,double, double)> p2 = &Plus::plusd; // 还有this指针,需要再加个对象
 
-			}
-		});
-	
-	t1.join();
-	t2.join();
-	
+	cout << p1(10, 20) << endl;
+	cout << p2(Plus(3),10, 20) << endl;
+	Plus pp (3);
+	cout << p2(pp,20, 20) << endl;
 	return 0;
 }
