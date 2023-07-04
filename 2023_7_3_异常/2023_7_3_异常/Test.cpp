@@ -270,7 +270,7 @@ void HttpServer()
 //	return 0;
 //}
 
-double Division(int a, int b) 
+double Division(int a, int b)
 {
 	// 当b == 0时抛出异常
 	if (b == 0)
