@@ -94,12 +94,14 @@ namespace Janonez
 		// unique_ptr<int> up2(up1);
 	}
 
-
+	// RAII
+	// 像指针一样使用
+	// 拷贝
 	template<class T>
 	class shared_ptr
 	{
 	public:
-		shared_ptr(T* ptr)
+		shared_ptr(T* ptr = nullptr) // T* ptr = nullptr 解决没有构造函数
 			: _ptr(ptr)
 			, _pcount(new int(1))
 			, _pmtx(new mutex)
@@ -112,6 +114,9 @@ namespace Janonez
 		void Release()
 		{
 			_pmtx->lock();
+
+			// 方法二，设置标识符
+			bool DeleteFlag = false;
 			if (--(*_pcount) == 0)
 			{
 				cout << "delete: " << _ptr << endl;
@@ -119,8 +124,18 @@ namespace Janonez
 				delete _pcount;
 
 				// delete _pmtx; 如何解决？？
+
+				//// 方法一，先解锁再释放，提前返回
+				//_pmtx->unlock();
+				//delete _pmtx;
+				//return;
 			}
 			_pmtx->unlock();
+
+			if (DeleteFlag)
+			{
+				delete _pmtx;
+			}
 		}
 
 		void Addcount()
@@ -167,7 +182,7 @@ namespace Janonez
 			return *_pcount;
 		}
 		
-		T* get()
+		T* get() const
 		{
 			return _ptr;
 		}
@@ -175,6 +190,35 @@ namespace Janonez
 		T* _ptr;
 		int* _pcount;
 		mutex* _pmtx;
+	};
+
+	template<class T>
+	class weak_ptr
+	{
+	public:
+		weak_ptr()
+			: _ptr(nullptr)
+		{}
+
+		weak_ptr(const shared_ptr<T>& sp)
+			: _ptr(sp.get())
+		{}
+
+		T& operator*()
+		{
+			return *_ptr;
+		}
+		T* operator->()
+		{
+			return _ptr;
+		}
+
+		T* get()
+		{
+			return _ptr;
+		}
+	private:
+		T* _ptr;
 	};
 
 	void test_shared()
@@ -199,13 +243,25 @@ namespace Janonez
 		int _year = 0;
 		int _month = 0;
 		int _day = 0;
+
+		~Date()
+		{}
 	};
+
+	// shared_ptr本身是线程安全的，因为计数是加锁保护
+	// 但是shared_ptr管理的对象不是线程安全的
 	void SharePtrFunc(shared_ptr<Date>& sp, size_t n, mutex& mtx)
 	{
 		for (size_t i = 0; i < n; ++i)
 		{
 			// 这里智能指针拷贝会++计数，智能指针析构会--计数，这里是线程安全的。
 			shared_ptr<Date> copy(sp);
+
+			mtx.lock();
+			sp->_day++;
+			sp->_year++;
+			sp->_month++;
+			mtx.unlock();
 		}
 	}
 
@@ -213,7 +269,7 @@ namespace Janonez
 	{
 		shared_ptr<Date> p(new Date);
 		cout << p.get() << endl;
-		const size_t n = 100000;
+		const size_t n = 500000;
 		mutex mtx;
 		thread t1(SharePtrFunc, ref(p), n, ref(mtx));
 		thread t2(SharePtrFunc, ref(p), n, ref(mtx));
@@ -221,5 +277,106 @@ namespace Janonez
 		t2.join();
 
 		cout << p.use_count() << endl;
+
+		cout << p->_year << endl;
+		cout << p->_month << endl;
+		cout << p->_day << endl;
+	}
+
+	// 循环引用
+
+	// weak_ptr
+	// 1、他不是常规的智能指针，不支持RAII
+	// 2、支持像指针一样
+	// 3、专门设计出来，辅助解决shared_ptr的循环引用的问题
+	// weak_ptr 可以指向资源，但他不参与管理，不增加引用计数
+	struct ListNode
+	{
+		//ListNode* _prev;
+		//ListNode* _next;
+
+		// 改为智能指针
+
+		//// 循环引用 
+		//std::shared_ptr<ListNode> _prev;
+		//std::shared_ptr<ListNode> _next;
+		//Janonez::shared_ptr<ListNode> _prev;
+		//Janonez::shared_ptr<ListNode> _next;
+
+		// 使用weak_ptr , 不增加引用计数, 避免循环引用
+		Janonez::weak_ptr<ListNode> _prev;
+		Janonez::weak_ptr<ListNode> _next;
+		int _val;
+
+		~ListNode()
+		{
+			cout << "~ListNode()" << endl;
+		}
+	};
+
+	void test_shared_cycle()
+	{
+		//ListNode* n1 = new ListNode;
+		//ListNode* n2 = new ListNode;
+
+		////此处抛异常时可能导致内存泄露
+		//n1->_next = n2;
+		//n2->_prev = n1;
+
+		//delete n1;
+		//delete n2;
+
+		Janonez::shared_ptr<ListNode> n1(new ListNode);
+		Janonez::shared_ptr<ListNode> n2(new ListNode);
+		// 报错原因：智能指针不会自动生成构造函数
+
+		cout << n1.use_count() << endl;
+		cout << n2.use_count() << endl;
+		
+		// 报错原因：智能指针不能赋值给普通指针，要将struct结构体改为智能指针
+		n1->_next = n2;
+		n2->_prev = n1;
+
+		cout << n1.use_count() << endl;
+		cout << n2.use_count() << endl;
+	}
+
+
+	// weak_ptr
+	// 1、他不是常规的智能指针，不支持RAII
+	// 2、支持像指针一样
+	// 3、专门设计出来，辅助解决shared_ptr的循环引用的问题
+	// weak_ptr 可以指向资源，但他不参与管理，不增加引用计数
+
+	//--------------------------------------------------------------------------------------
+	// 定制删除器 -- 可调用对象
+
+	template<class T>
+	struct DeleteArray
+	{
+		void operator()(T* ptr)
+		{
+			cout << "void operator()(T* ptr)" << endl;
+			delete[] ptr;
+		}
+	};
+	void test_shared_deletor()
+	{
+		// std::shared_ptr<Date> spa(new Date[10]);
+
+		// new[]时会在头多开四个字节储存个数，记录调取多少次析构函数
+		// 正确做法：传入删除器
+		std::shared_ptr<Date> spa1(new Date[10],DeleteArray<Date>()); // 仿函数
+		
+		std::shared_ptr<Date> spa2(new Date[10],[](Date* ptr){
+			cout << "lambda delete[]" <<ptr << endl;
+			delete[] ptr; 
+			}); // lambda
+		
+		std::shared_ptr<FILE> spF3(fopen("Test.cpp","r"), [](FILE* ptr) {
+			cout << "lambda fclose" << ptr << endl;
+			fclose(ptr); 
+			}); // lambda
+
 	}
 }

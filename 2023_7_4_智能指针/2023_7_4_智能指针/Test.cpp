@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS 1
 #include <iostream>
 using namespace std;
 
@@ -152,6 +153,9 @@ int main()
 	// Janonez::test_unique();
 	// test_unique();
 	// Janonez::test_shared();
-	Janonez::test_shared_safe();
+	// Janonez::test_shared_safe();
+	// Janonez::test_shared_cycle();
+
+	Janonez::test_shared_deletor();
 	return 0;
 }
