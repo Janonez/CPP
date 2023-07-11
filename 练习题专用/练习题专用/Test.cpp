@@ -520,21 +520,59 @@ using namespace std;
 // 
 //    return 0;
 //}
-#include <vector>
-template<typename C>
-void print2nd(const C& container)    	//打印容器内的第二元素
-{
-	if (container.size() >= 2)
-	{
-		C::const_iterator iter(container.begin());	//取得第一元素的迭代器
-		++iter;										//将iter移往第二元素
-		int value = *iter;							//将该元素复制到某个int.
-		std::cout << value;							//打印那个int.
-	}
-}
-int main()
-{
-	std::vector<int> v = { 1,2,3,4 };
-	print2nd(v);
-	return 0;
-}
+//#include <vector>
+//template<typename C>
+//void print2nd(const C& container)    	//打印容器内的第二元素
+//{
+//	if (container.size() >= 2)
+//	{
+//		C::const_iterator iter(container.begin());	//取得第一元素的迭代器
+//		++iter;										//将iter移往第二元素
+//		int value = *iter;							//将该元素复制到某个int.
+//		std::cout << value;							//打印那个int.
+//	}
+//}
+//int main()
+//{
+//	std::vector<int> v = { 1,2,3,4 };
+//	print2nd(v);
+//	return 0;
+//}
+// 
+
+//#include <iostream>
+//#include <vector>
+//class A
+//{
+//public:
+//	A(int num = 10)
+//		: _n(num)
+//	{}
+//private:
+//	std::vector<int> _n;
+//};
+//
+//int main()
+//{
+//	A aa;
+//	return 0;
+//}
+
+//#include <iostream>
+//int main()
+//{
+//	int n = 21 << 5;
+//	int m = 21 ^ (n - 1);
+//	std::cout << m;
+//	return 0;
+//}
+
+// 多线程实现交错打印数字,实现两个线程依次交错打印1-100的奇数和偶数
+//#include <iostream>
+//#include <thread>
+//using namespace std;
+//int main()
+//{
+//
+//	return 0;
+//}
