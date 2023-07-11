@@ -182,6 +182,8 @@ using namespace std;
 //	// 限制类外面随意创建对象
 //	Singleton()
 //	{}
+//	Singleton(const Singleton& s) = delete;
+//	Singleton& operator=(const Singleton& s) = delete;
 //private:
 //	mutex _mtx;
 //	vector<string> _v;
@@ -201,48 +203,128 @@ using namespace std;
 // 饿汉的优点：简单（相对懒汉而言）
 
 // 懒汉完美的解决了上面饿汉的问题，但是就是相对复杂一点点
+//class Singleton
+//{
+//public:
+//	static Singleton* GetInstance()
+//	{
+//		// 这里存在线程安全问题
+//		// 双检查加锁 -- 保护第一次
+//		if (_ins == nullptr)// 提高效率，不需要每次获取单利都加锁解锁
+//		{
+//			_imtx.lock();
+//			if (_ins == nullptr) // 保证线程安全和只new一次
+//			{
+//				_ins = new Singleton; 
+//			}
+//			_imtx.unlock();
+//		}
+//		return _ins;
+//	}
+//
+//	// 一般不显示释放，全局都要使用单例对象
+//	static void DelInstance()
+//	{
+//		_imtx.lock();
+//		if (_ins)
+//		{
+//			delete _ins;
+//			_ins = nullptr;
+//		}
+//		_imtx.unlock();
+//	}
+//
+//	// 内部类：单例对象回收
+//	class GC
+//	{
+//	public:
+//		~GC()
+//		{
+//			DelInstance();
+//		}
+//	};
+//
+//	static GC _gc;
+//
+//	void Add(const string& str)
+//	{
+//		_vmtx.lock();
+//		_v.push_back(str);
+//		_vmtx.unlock();
+//	}
+//
+//	void Print()
+//	{
+//		_vmtx.lock();
+//		for (auto& e : _v)
+//		{
+//			cout << e << endl;
+//		}
+//		cout << endl;
+//		_vmtx.unlock();
+//	}
+//
+//	~Singleton()
+//	{
+//		// 持久化
+//		// 比如要求程序结束时，将数据写到文件，单例对象 析构 时持久化就比较好
+//	}
+//private:
+//	// 限制类外面随意创建对象 -- 封掉构造和拷贝
+//	Singleton()
+//	{}
+//	Singleton(const Singleton& s) = delete;
+//	Singleton& operator=(const Singleton& s) = delete;
+//
+//private:
+//	mutex _vmtx;//保护vector写入的原子性
+//	vector<string> _v;
+//
+//	static Singleton* _ins;
+//	static mutex _imtx;//保护实例
+//};
+//
+//Singleton* Singleton::_ins = nullptr;
+//mutex Singleton::_imtx;
+//// 静态对象自动调用析构
+//Singleton::GC Singleton::_gc;
+//int main()
+//{
+//	srand(time(0));
+//
+//	int n = 50;
+//	thread t1([n]() {
+//		for (size_t i = 0; i < n; ++i)
+//		{
+//			Singleton::GetInstance()->Add("t1线程：" + to_string(rand()));
+//		}
+//		});
+//
+//	thread t2([n]() {
+//		for (size_t i = 0; i < n; ++i)
+//		{
+//			Singleton::GetInstance()->Add("t2线程：" + to_string(rand()));
+//		}
+//		});
+//
+//	t1.join();
+//	t2.join();
+//
+//	Singleton::GetInstance()->Print();
+//	return 0;
+//}
+
+// 另一种懒汉模式实现
 class Singleton
 {
 public:
 	static Singleton* GetInstance()
 	{
-		// 这里存在线程安全问题
-		// 双检查加锁 -- 保护第一次
-		if (_ins == nullptr)// 提高效率，不需要每次获取单利都加锁解锁
-		{
-			_imtx.lock();
-			if (_ins == nullptr) // 保证线程安全和只new一次
-			{
-				_ins = new Singleton; 
-			}
-			_imtx.unlock();
-		}
-		return _ins;
+		// C++11之前，不可以保证初始化静态对象的线程安全问题
+		// C++11之后，可以保证初始化静态对象的线程安全问题
+		static Singleton inst;
+		return &inst;
 	}
-
-	// 一般不显示释放，全局都要使用单例对象
-	static void DelInstance()
-	{
-		_imtx.lock();
-		if (_ins)
-		{
-			delete _ins;
-			_ins = nullptr;
-		}
-		_imtx.unlock();
-	}
-
-	// 内部类：单例对象回收
-	class GC
-	{
-	public:
-		~GC()
-		{
-			DelInstance();
-		}
-	};
-
-	static GC _gc;
 
 	void Add(const string& str)
 	{
@@ -268,43 +350,21 @@ public:
 		// 比如要求程序结束时，将数据写到文件，单例对象 析构 时持久化就比较好
 	}
 private:
-	// 限制类外面随意创建对象
+	// 限制类外面随意创建对象 -- 封掉构造和拷贝
 	Singleton()
-	{}
+	{
+		cout << "Singleton()" << endl;
+	}
+	Singleton(const Singleton& s) = delete;
+	Singleton& operator=(const Singleton& s) = delete;
+
 private:
 	mutex _vmtx;//保护vector写入的原子性
 	vector<string> _v;
-
-	static Singleton* _ins;
-	static mutex _imtx;//保护实例
 };
 
-Singleton* Singleton::_ins = nullptr;
-mutex Singleton::_imtx;
-// 静态对象自动调用析构
-Singleton::GC Singleton::_gc;
 int main()
 {
-	srand(time(0));
-
-	int n = 50;
-	thread t1([n]() {
-		for (size_t i = 0; i < n; ++i)
-		{
-			Singleton::GetInstance()->Add("t1线程：" + to_string(rand()));
-		}
-		});
-
-	thread t2([n]() {
-		for (size_t i = 0; i < n; ++i)
-		{
-			Singleton::GetInstance()->Add("t2线程：" + to_string(rand()));
-		}
-		});
-
-	t1.join();
-	t2.join();
-
-	Singleton::GetInstance()->Print();
+	Singleton::GetInstance();
 	return 0;
 }
