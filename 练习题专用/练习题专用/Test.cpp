@@ -576,3 +576,42 @@ using namespace std;
 //
 //	return 0;
 //}
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+    string str;
+    cin >> str;
+    int count = 0;
+    string tmp;
+    string ret;
+    for (int i = 0; i < str.size(); ++i)
+    {
+        if (str[i] >= '0' && str[i] <= '9')
+        {
+            tmp += str[i];
+        }
+        else // 不是数字字符，则表示一个连续的数字串结束了，判断长度
+        {
+            if (ret.size() < tmp.size())
+            {
+                ret = tmp;
+
+            }
+            else
+            {
+                tmp = "";
+            }
+
+        }
+    }
+    if (ret.size() < tmp.size())
+    {
+        ret = tmp;
+
+    }
+    cout << ret;
+}
