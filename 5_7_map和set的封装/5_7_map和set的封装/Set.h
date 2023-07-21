@@ -13,7 +13,8 @@ namespace Janonez
 			}
 		};
 	public:
-		typedef typename RBTree<K, K, SetKeyOfT>::iterator iterator;
+		typedef typename RBTree<K, K, SetKeyOfT>::const_iterator iterator;
+		typedef typename RBTree<K, K, SetKeyOfT>::const_iterator const_iterator;
 		iterator begin()
 		{
 			return _t.begin();
@@ -23,7 +24,7 @@ namespace Janonez
 		{
 			return _t.end();
 		}
-		bool insert(const K& key)
+		pair<iterator, bool> insert(const K& key)
 		{
 			return _t.Insert(key);
 		}
@@ -33,16 +34,24 @@ namespace Janonez
 
 	void test_set1()
 	{
+		int a[] = { 16, 3, 7, 11, 9, 26, 18, 14, 15 };
 		set<int> s;
-		s.insert(3);
-		s.insert(1);
-		s.insert(2);
+		for (auto e : a)
+		{
+			s.insert(e);
+		}
 
 		set<int>::iterator it = s.begin();
 		while (it != s.end())
 		{
 			cout << *it << " ";
 			++it;
+		}
+		cout << endl;
+
+		for (auto e : s)
+		{
+			cout << e << " ";
 		}
 		cout << endl;
 	}

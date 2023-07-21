@@ -36,6 +36,10 @@ struct __RBTreeIterator
 	__RBTreeIterator(Node* node)
 		: _node(node)
 	{}
+
+	__RBTreeIterator(const __RBTreeIterator<T, T&, T*>& it)
+		: _node(it._node)
+	{}
 	Ref operator*()
 	{
 		return _node->_data;
@@ -48,13 +52,13 @@ struct __RBTreeIterator
 	{
 		return _node != s._node;
 	}
-	Self operator++()
+	Self& operator++()
 	{
 		if (_node->_right)
 		{
-			// 右不为空，找左子树最右节点
-			Node* subLeft = _node->_right;
-			while (subLeft)
+			// 右不为空，找右子树最左节点
+			Node* subLeft = _node->_right; 
+			while (subLeft->_left)
 			{
 				subLeft = subLeft->_left;
 			}
@@ -62,7 +66,46 @@ struct __RBTreeIterator
 		}
 		else
 		{
-			// 左为空，
+			// 右为空，找到孩子是父亲左子树的那个祖先节点(中序遍历，左中右，如果当前节点是父亲节点的右子树，说明父亲这颗树已经遍历完成)
+			Node* cur = _node;
+			Node* parent = cur->_parent;
+			while (parent && cur == parent->_right) // 已经遍历过的，继续向上查找
+			{
+				cur = parent;
+				parent = cur->_parent;
+			}
+
+			_node = parent;
+
+		}
+		return *this;
+	}
+
+	Self& operator--()
+	{
+		if (_node->_left)// 左子树
+		{
+			// 左不为空，找左子树最右节点
+			Node* subRight = _node->_left;
+			while (subRight->_right)
+			{
+				subRight = subRight->_right;
+			}
+			_node = subRight;
+		}
+		else
+		{
+			// 左为空，找到孩子是父亲右子树的那个祖先节点
+			Node* cur = _node;
+			Node* parent = cur->_parent;
+			while (parent && cur == parent->_left) // 已经遍历过的，继续向上查找
+			{
+				cur = parent;
+				parent = cur->_parent;
+			}
+
+			_node = parent;
+
 		}
 		return *this;
 	}
@@ -90,6 +133,19 @@ public:
 		}
 		return iterator(cur);
 	}
+	const_iterator end() const
+	{
+		return const_iterator(nullptr);
+	}
+	const_iterator begin() const
+	{
+		Node* cur = _root;
+		while (cur && cur->_left)
+		{
+			cur = cur->_left;
+		}
+		return const_iterator(cur);
+	}
 	iterator end()
 	{
 		return iterator(nullptr);
@@ -116,13 +172,13 @@ public:
 		return nullptr;
 	}
 
-	bool Insert(const T& data)
+	pair<iterator, bool> Insert(const T& data)
 	{
 		if (_root == nullptr)
 		{
 			_root = new Node(data);
 			_root->_col = BLACK;
-			return true;
+			return make_pair(iterator(_root), true);
 		}
 
 		// 不为空，开始插入，取出当前节点，寻找位置
@@ -143,11 +199,13 @@ public:
 			}
 			else // 相同，返回失败
 			{
-				return false;
+				return make_pair(iterator(cur), false);
 			}
 		}
+		
 		// 走到这里说明找到了要插入的位置，为要插入的数据创建一个节点
 		cur = new Node(data);
+		Node* newnode = cur;
 		// 这时需要判断插入位置，与父节点的数据比较大小
 		if (parent->_data > data)// 比父节点小，插入左边
 		{
@@ -243,7 +301,7 @@ public:
 			}
 		}
 		_root->_col = BLACK;
-		return true;
+		return make_pair(iterator(newnode), true);
 	}
 	bool IsBalance()
 	{

@@ -4,7 +4,8 @@ using namespace std;
 #include "Set.h"
 int main()
 {
-	//Janonez::test_map1();
-	Janonez::test_set1();
+	
+	//Janonez::test_set1();
+	Janonez::test_map2();
 	return 0;
 }
