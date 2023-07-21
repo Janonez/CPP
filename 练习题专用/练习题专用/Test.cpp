@@ -577,41 +577,175 @@ using namespace std;
 //	return 0;
 //}
 
-#include <iostream>
-#include <string>
-using namespace std;
+//#include <iostream>
+//#include <string>
+//using namespace std;
+//
+//int main()
+//{
+//    string str;
+//    cin >> str;
+//    int count = 0;
+//    string tmp;
+//    string ret;
+//    for (int i = 0; i < str.size(); ++i)
+//    {
+//        if (str[i] >= '0' && str[i] <= '9')
+//        {
+//            tmp += str[i];
+//        }
+//        else // 不是数字字符，则表示一个连续的数字串结束了，判断长度
+//        {
+//            if (ret.size() < tmp.size())
+//            {
+//                ret = tmp;
+//
+//            }
+//            else
+//            {
+//                tmp = "";
+//            }
+//
+//        }
+//    }
+//    if (ret.size() < tmp.size())
+//    {
+//        ret = tmp;
+//
+//    }
+//    cout << ret;
+//}
 
+//#include <iostream>
+//#include <string>
+//#include <vector>
+//using namespace std;
+//
+//int main()
+//{
+//    int n = 0;
+//    cin >> n;
+//    vector<string> vs;
+//    vs.resize(n);
+//    for (int i = 0; i < n; ++i)
+//    {
+//        cin >> vs[i];
+//    }
+//    bool len = true, lex = true;
+//    for (int i = 1; i < n; ++i)
+//    {
+//        if (vs[i - 1].size() > vs[i].size())
+//        {
+//            len = false;
+//            break;
+//        }
+//    }
+//    for (int i = 1; i < n; ++i)
+//    {
+//        if (vs[i - 1] > vs[i])
+//        {
+//            lex = false;
+//            break;
+//        }
+//    }
+//    if (len && lex)
+//        cout << "both" << endl;
+//    else if (!len && lex)
+//        cout << "lexicographically" << endl;
+//    else if (len && !lex)
+//        cout << "lengths" << endl;
+//    else if (!len && !lex)
+//        cout << "none" << endl;
+//
+//    return 0;
+//}
+
+
+//#include <iostream>
+//using namespace std;
+//
+//class A
+//{
+//public:
+//	A()
+//	{
+//		cout << "A()" << endl;
+//	}
+//	A(const A& a)
+//	{
+//		cout << "A(const A &a)" << endl;
+//	}
+//};
+//
+//int main()
+//{
+//	A a1;
+//
+//	//这两条语句都会调用拷贝构造函数
+//	A a2(a1); // 初始化对象 d2
+//	A a3 = a1; // 初始化对象 d3
+//	return 0;
+//}
+
+//#include <iostream>
+//
+//class B
+//{
+//public:
+//	B()
+//	{
+//		
+//	}
+//	B(const B&)
+//	{
+//		std::cout << "B(const B&)" << std::endl;
+//	}
+//	~B()
+//	{
+//		
+//
+//	}
+//private:
+//	int _b;
+//};
+//
+//B f(B b)
+//{
+//	B v(b);
+//	B w = v;
+//	return w;
+//}
+//
+//int main()
+//{
+//	B b;
+//	B y = f(f(b));
+//	return 0;
+//}
+
+//#include <iostream>
+//using namespace std;
+//class cla {
+//	static int n;
+//public:
+//	cla() { n++; }
+//	~cla() { n--; }
+//	static int get_n() { return n; }
+//};
+//int cla::n = 0;
+//int main() {
+//	cla* p = new cla;
+//	delete p;
+//	cout << "n=" << cla::get_n() << endl;
+//	return 0;
+//}
+
+#include <iostream>
 int main()
 {
-    string str;
-    cin >> str;
-    int count = 0;
-    string tmp;
-    string ret;
-    for (int i = 0; i < str.size(); ++i)
-    {
-        if (str[i] >= '0' && str[i] <= '9')
-        {
-            tmp += str[i];
-        }
-        else // 不是数字字符，则表示一个连续的数字串结束了，判断长度
-        {
-            if (ret.size() < tmp.size())
-            {
-                ret = tmp;
-
-            }
-            else
-            {
-                tmp = "";
-            }
-
-        }
-    }
-    if (ret.size() < tmp.size())
-    {
-        ret = tmp;
-
-    }
-    cout << ret;
+	const int a = 10;
+	int* p = (int*)(&a);
+	*p = 20;
+	cout << a << *p;
+	return 0;
 }

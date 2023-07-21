@@ -106,6 +106,9 @@ public:
 		while (parent && parent->_col == RED)// 当插入节点的父节点也为红时，就需要调整了
 		{
 			// 情况一：cur红 parent红 grandfather黑 uncle存在且为红
+			//     g
+			//   p   u
+			// c 
 			Node* grandfather = parent->_parent;
 			if (parent == grandfather->_left)
 			{
@@ -115,10 +118,11 @@ public:
 					grandfather->_col = RED;
 					uncle->_col = BLACK;
 					parent->_col = BLACK;
-
-					// 更新节点，继续向上，查看是否需要更新颜色
+					//更新节点，继续向上，查看是否需要更新颜色
 					cur = grandfather;
 					parent = cur->_parent;
+					
+					
 				}
 				else // uncle不存在/uncle为黑
 				{
@@ -137,15 +141,18 @@ public:
 					//   p   u
 					//     c 
 						RotateL(parent);
-						RotateR(grandfather);
 						cur->_col = BLACK;
 						grandfather->_col = RED;
+						RotateR(grandfather);
 					}
 					break;
 				}
 			}
 			else // (parent == grandfer->_right)
 			{
+				//     g
+				//   u   p
+				//		   c 
 				Node* uncle = grandfather->_left;
 				if (uncle && uncle->_col == RED) // uncle存在且为红
 				{
@@ -156,6 +163,7 @@ public:
 					// 更新节点，继续向上，查看是否需要更新颜色
 					cur = grandfather;
 					parent = cur->_parent;
+				
 				}
 				else // uncle不存在/uncle为黑
 				{
@@ -367,4 +375,21 @@ void Test_RBTree2()
 
 	cout << t.IsBalance() << endl;
 	cout << t.Height() << endl;
+}
+
+void Test_RBTree3()
+{
+	//int arr[] = {16, 3, 7, 11, 9, 26, 18, 14, 15};
+	int arr[] = { 30,15,70,10,20,60,85,5,50,65,80,90,40,55 };
+	RBTree<int, int> t1;
+
+	for (auto a : arr)
+	{
+		t1.Insert(make_pair(a, a));
+		//cout << a << "插入：" << t1.IsBalance() << endl;
+	}
+
+	t1.InOrder();
+
+	cout << t1.IsBalance() << endl;
 }
