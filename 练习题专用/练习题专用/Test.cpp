@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS 1
+ï»¿#define _CRT_SECURE_NO_WARNINGS 1
 #include <iostream>
 #include <algorithm>
 using namespace std;
@@ -48,11 +48,11 @@ using namespace std;
 //	char* str1 = "abcd";
 //	char str2[] = "abcd";
 //	static int b = 2;
-//	printf("aµÄµØÖ·:%p\n", &a);
-//	printf("str1µÄµØÖ·:%p\n", &str1);
-//	printf("abcdµÄµØÖ·:%p\n", str1);
-//	printf("str2µÄµØÖ·:%p\n", &str2);
-//	printf("bµÄµØÖ·:%p\n",&b);
+//	printf("açš„åœ°å€:%p\n", &a);
+//	printf("str1çš„åœ°å€:%p\n", &str1);
+//	printf("abcdçš„åœ°å€:%p\n", str1);
+//	printf("str2çš„åœ°å€:%p\n", &str2);
+//	printf("bçš„åœ°å€:%p\n",&b);
 //	return 0;
 //}
 
@@ -82,7 +82,7 @@ using namespace std;
 //}
 
 //#include <stdio.h>
-//#include <string.h> // Ìá¹©strlen()º¯ÊıµÄÔ­ĞÍ
+//#include <string.h> // æä¾›strlen()å‡½æ•°çš„åŸå‹
 //#define PRAISE "You are an extraordinary being."
 //int main()
 //{
@@ -139,7 +139,7 @@ using namespace std;
 //#include <iostream>
 //#include <cmath>
 //using namespace std;
-//// ËØÊı£ºÖÊÊıÊÇÖ¸ÔÚ´óÓÚ1µÄ×ÔÈ»ÊıÖĞ£¬³ıÁË1ºÍËü±¾ÉíÒÔÍâ²»ÔÙÓĞÆäËûÒòÊıµÄ×ÔÈ»Êı¡£
+//// ç´ æ•°ï¼šè´¨æ•°æ˜¯æŒ‡åœ¨å¤§äº1çš„è‡ªç„¶æ•°ä¸­ï¼Œé™¤äº†1å’Œå®ƒæœ¬èº«ä»¥å¤–ä¸å†æœ‰å…¶ä»–å› æ•°çš„è‡ªç„¶æ•°ã€‚
 //bool isPrime(int n)
 //{
 //    int m = sqrt(n);
@@ -214,7 +214,7 @@ using namespace std;
 //    int count = 0;
 //    while (tmp != m)
 //    {
-//        // Ñ°ÕÒ×î´óµÄÔ¼Êı
+//        // å¯»æ‰¾æœ€å¤§çš„çº¦æ•°
 //        vector<int> a;
 //        Div(tmp, a);
 //        int i = a.size() - 1;
@@ -381,22 +381,22 @@ using namespace std;
 //using namespace std;
 //int pageUp(int select, int n, int* pos)
 //{
-//    if (*pos == 0) // µ±Ç°ÔÚµÚÒ»ĞĞ£¬ÍùÇ°·­ÓĞÁ½ÖÖÇé¿ö
+//    if (*pos == 0) // å½“å‰åœ¨ç¬¬ä¸€è¡Œï¼Œå¾€å‰ç¿»æœ‰ä¸¤ç§æƒ…å†µ
 //    {
-//        if (n <= 4)// Èç¹û×ÜÊıĞ¡ÓÚ4¸ö£¬Ö±½Ó·­µ½×îºóÒ»ĞĞ
+//        if (n <= 4)// å¦‚æœæ€»æ•°å°äº4ä¸ªï¼Œç›´æ¥ç¿»åˆ°æœ€åä¸€è¡Œ
 //        {
 //            *pos = n-1;
 //        }
-//        else // Èç¹û×ÜÊı´óÓÚËÄ¸ö£¬·ÖÁ½ÖÖÇé¿ö
+//        else // å¦‚æœæ€»æ•°å¤§äºå››ä¸ªï¼Œåˆ†ä¸¤ç§æƒ…å†µ
 //        {
-//            if (select == 1)// µ±Ç°ÊÇ1£¬·­µ½×îºóÒ»¸öÊı£¬×îºóÒ»¸öÎ»ÖÃ
+//            if (select == 1)// å½“å‰æ˜¯1ï¼Œç¿»åˆ°æœ€åä¸€ä¸ªæ•°ï¼Œæœ€åä¸€ä¸ªä½ç½®
 //            {
 //                *pos = 3;
 //            }
-//            // µ±Ç°²»ÊÇ1£¬-1£¬»¹ÔÚµÚÒ»¸öÎ»ÖÃ
+//            // å½“å‰ä¸æ˜¯1ï¼Œ-1ï¼Œè¿˜åœ¨ç¬¬ä¸€ä¸ªä½ç½®
 //        }
 //    }
-//    else // ²»ÔÚµÚÒ»ĞĞ£¬Ö±½ÓÍùÇ°ÒÆ¶¯Ò»ĞĞ
+//    else // ä¸åœ¨ç¬¬ä¸€è¡Œï¼Œç›´æ¥å¾€å‰ç§»åŠ¨ä¸€è¡Œ
 //    {
 //        *pos -= 1;
 //    }
@@ -408,22 +408,22 @@ using namespace std;
 //int pageDown(int select, int n, int* pos)
 //{
 //    int end = n >= 4 ? 3 : n - 1;
-//    if (*pos == end) // µ±Ç°ÔÚ×îºóĞĞ£¬ÍùÇ°·­ÓĞÁ½ÖÖÇé¿ö
+//    if (*pos == end) // å½“å‰åœ¨æœ€åè¡Œï¼Œå¾€å‰ç¿»æœ‰ä¸¤ç§æƒ…å†µ
 //    {
-//        if (n <= 4)// Èç¹û×ÜÊıĞ¡ÓÚ4¸ö£¬Ö±½Ó·­µ½µÚÒ»ĞĞ
+//        if (n <= 4)// å¦‚æœæ€»æ•°å°äº4ä¸ªï¼Œç›´æ¥ç¿»åˆ°ç¬¬ä¸€è¡Œ
 //        {
 //            *pos = 0;
 //        }
-//        else // Èç¹û×ÜÊı´óÓÚËÄ¸ö£¬·ÖÁ½ÖÖÇé¿ö
+//        else // å¦‚æœæ€»æ•°å¤§äºå››ä¸ªï¼Œåˆ†ä¸¤ç§æƒ…å†µ
 //        {
-//            if (select == n)// µ±Ç°ÊÇ×îºóÒ»¸öÖµ£¬·­µ½µÚÒ»¸öÊı£¬µÚÒ»¸öÎ»ÖÃ
+//            if (select == n)// å½“å‰æ˜¯æœ€åä¸€ä¸ªå€¼ï¼Œç¿»åˆ°ç¬¬ä¸€ä¸ªæ•°ï¼Œç¬¬ä¸€ä¸ªä½ç½®
 //            {
 //                *pos = 0;
 //            }
-//            // µ±Ç°²»ÊÇ×îºóÒ»¸öÖµ£¬-1£¬»¹ÔÚ×îºóÒ»¸öÎ»ÖÃ
+//            // å½“å‰ä¸æ˜¯æœ€åä¸€ä¸ªå€¼ï¼Œ-1ï¼Œè¿˜åœ¨æœ€åä¸€ä¸ªä½ç½®
 //        }
 //    }
-//    else // ²»ÔÚ×îºóĞĞ£¬Ö±½ÓÍùºóÒÆ¶¯Ò»ĞĞ
+//    else // ä¸åœ¨æœ€åè¡Œï¼Œç›´æ¥å¾€åç§»åŠ¨ä¸€è¡Œ
 //    {
 //        *pos += 1;
 //    }
@@ -438,7 +438,7 @@ using namespace std;
 //    int pos = 0;
 //    for (int i = 0; i < str.size(); ++i)
 //    {
-//        if (str[i] == 'U') // ÏòÉÏ·­Ò³£¬·ÖÁ½ÖÖÇé¿ö
+//        if (str[i] == 'U') // å‘ä¸Šç¿»é¡µï¼Œåˆ†ä¸¤ç§æƒ…å†µ
 //        {
 //            select = pageUp(select, n, &pos);
 //        }
@@ -484,7 +484,7 @@ using namespace std;
 //#include <algorithm>
 //using namespace std;
 //int gcd(int a, int b) {
-//    // bÊÇ´óÓÚµÈÓÚaµÄ,bÎª±»³ıÊı£¬aÎª³ıÊı
+//    // bæ˜¯å¤§äºç­‰äºaçš„,bä¸ºè¢«é™¤æ•°ï¼Œaä¸ºé™¤æ•°
 //    int divd = b;
 //    int div = a;
 //    int rem = divd % div;
@@ -506,13 +506,13 @@ using namespace std;
 //        }
 //        int c = a;
 //        for (int i = 0; i < n; ++i) {
-//            // ¿ªÊ¼´ò¹Ö
+//            // å¼€å§‹æ‰“æ€ª
 //            if (c > b[i]) {
-//                // ÄÜÁ¦Öµc´óÓÚ¹ÖµÄ·ÀÓùÁ¦£¬Ö±½Ó´ò°Ü²¢¼Ó·ÀÓùÁ¦
+//                // èƒ½åŠ›å€¼cå¤§äºæ€ªçš„é˜²å¾¡åŠ›ï¼Œç›´æ¥æ‰“è´¥å¹¶åŠ é˜²å¾¡åŠ›
 //                c += b[i];
 //            }
 //            else {
-//                // ÄÜÁ¦ÖµcĞ¡ÓÚ¹ÖµÄ·ÀÓùÁ¦£¬¼Ó×î´ó¹«Ô¼Êı
+//                // èƒ½åŠ›å€¼cå°äºæ€ªçš„é˜²å¾¡åŠ›ï¼ŒåŠ æœ€å¤§å…¬çº¦æ•°
 //                c += gcd(c, b[i]);
 //            }
 //        }
@@ -522,14 +522,14 @@ using namespace std;
 //}
 //#include <vector>
 //template<typename C>
-//void print2nd(const C& container)    	//´òÓ¡ÈİÆ÷ÄÚµÄµÚ¶şÔªËØ
+//void print2nd(const C& container)    	//æ‰“å°å®¹å™¨å†…çš„ç¬¬äºŒå…ƒç´ 
 //{
 //	if (container.size() >= 2)
 //	{
-//		C::const_iterator iter(container.begin());	//È¡µÃµÚÒ»ÔªËØµÄµü´úÆ÷
-//		++iter;										//½«iterÒÆÍùµÚ¶şÔªËØ
-//		int value = *iter;							//½«¸ÃÔªËØ¸´ÖÆµ½Ä³¸öint.
-//		std::cout << value;							//´òÓ¡ÄÇ¸öint.
+//		C::const_iterator iter(container.begin());	//å–å¾—ç¬¬ä¸€å…ƒç´ çš„è¿­ä»£å™¨
+//		++iter;										//å°†iterç§»å¾€ç¬¬äºŒå…ƒç´ 
+//		int value = *iter;							//å°†è¯¥å…ƒç´ å¤åˆ¶åˆ°æŸä¸ªint.
+//		std::cout << value;							//æ‰“å°é‚£ä¸ªint.
 //	}
 //}
 //int main()
@@ -567,7 +567,7 @@ using namespace std;
 //	return 0;
 //}
 
-// ¶àÏß³ÌÊµÏÖ½»´í´òÓ¡Êı×Ö,ÊµÏÖÁ½¸öÏß³ÌÒÀ´Î½»´í´òÓ¡1-100µÄÆæÊıºÍÅ¼Êı
+// å¤šçº¿ç¨‹å®ç°äº¤é”™æ‰“å°æ•°å­—,å®ç°ä¸¤ä¸ªçº¿ç¨‹ä¾æ¬¡äº¤é”™æ‰“å°1-100çš„å¥‡æ•°å’Œå¶æ•°
 //#include <iostream>
 //#include <thread>
 //using namespace std;
@@ -594,7 +594,7 @@ using namespace std;
 //        {
 //            tmp += str[i];
 //        }
-//        else // ²»ÊÇÊı×Ö×Ö·û£¬Ôò±íÊ¾Ò»¸öÁ¬ĞøµÄÊı×Ö´®½áÊøÁË£¬ÅĞ¶Ï³¤¶È
+//        else // ä¸æ˜¯æ•°å­—å­—ç¬¦ï¼Œåˆ™è¡¨ç¤ºä¸€ä¸ªè¿ç»­çš„æ•°å­—ä¸²ç»“æŸäº†ï¼Œåˆ¤æ–­é•¿åº¦
 //        {
 //            if (ret.size() < tmp.size())
 //            {
@@ -681,9 +681,9 @@ using namespace std;
 //{
 //	A a1;
 //
-//	//ÕâÁ½ÌõÓï¾ä¶¼»áµ÷ÓÃ¿½±´¹¹Ôìº¯Êı
-//	A a2(a1); // ³õÊ¼»¯¶ÔÏó d2
-//	A a3 = a1; // ³õÊ¼»¯¶ÔÏó d3
+//	//è¿™ä¸¤æ¡è¯­å¥éƒ½ä¼šè°ƒç”¨æ‹·è´æ„é€ å‡½æ•°
+//	A a2(a1); // åˆå§‹åŒ–å¯¹è±¡ d2
+//	A a3 = a1; // åˆå§‹åŒ–å¯¹è±¡ d3
 //	return 0;
 //}
 
@@ -740,12 +740,31 @@ using namespace std;
 //	return 0;
 //}
 
-#include <iostream>
-int main()
-{
-	const int a = 10;
-	int* p = (int*)(&a);
-	*p = 20;
-	cout << a << *p;
+//#include <iostream>
+//int main()
+//{
+//	const int a = 10;
+//	int* p = (int*)(&a);
+//	*p = 20;
+//	cout << a << *p;
+//	return 0;
+//}
+
+#include <stdio.h>
+
+ int main()
+ {
+	FILE *fp = fopen("log.txt", "w+");
+	if (fp == nullptr)
+		perror("fopen fail");
+	fprintf(fp, "hell88o 222world");
+	// fseek(fp,0,SEEK_SET);
+	fflush(fp);
+	char buffer[64] = {0};
+	// memset(buffer, 0, 64);
+	fread(buffer, sizeof(char), sizeof(buffer)-1, fp);
+	printf("%s\n", buffer);
+	// cout << buffer << endl;
+	fclose(fp);
 	return 0;
-}
+ }
