@@ -136,7 +136,30 @@ namespace HashBucket
 			, _next(nullptr)
 		{}
 	};
-	template<class K, class V>
+	template<class K>
+	struct HashFunc
+	{
+		size_t operator()(const K& key)
+		{
+			return key;
+		}
+	};
+	// 特化
+	template<>
+	struct HashFunc<string>
+	{
+		size_t operator()(const string& s)
+		{
+			size_t hash = 0;
+			for (auto ch : s)
+			{
+				hash += ch;
+				hash *= 31;
+			}
+			return hash;
+		}
+	};
+	template<class K, class V, class Hash = HashFunc<K>>
 	class HashTable
 	{
 		typedef HashNode<K, V> Node;
@@ -154,21 +177,47 @@ namespace HashBucket
 				cur = nullptr;
 			}
 		}
+		// size_t newsize = GetNextPrime(_tables.size());
+		size_t GetNextPrime(size_t prime)
+		{
+			// SGI
+			static const int __stl_num_primes = 28;
+			static const unsigned long __stl_prime_list[__stl_num_primes] =
+			{
+				53, 97, 193, 389, 769,
+				1543, 3079, 6151, 12289, 24593,
+				49157, 98317, 196613, 393241, 786433,
+				1572869, 3145739, 6291469, 12582917, 25165843,
+				50331653, 100663319, 201326611, 402653189, 805306457,
+				1610612741, 3221225473, 4294967291
+			};
+
+			size_t i = 0;
+			for (; i < __stl_num_primes; ++i)
+			{
+				if (__stl_prime_list[i] > prime)
+					return __stl_prime_list[i];
+			}
+
+			return __stl_prime_list[i];
+		}
 		bool Insert(const pair<K, V>& kv)
 		{
 			if (Find(kv.first))// 防止重复插入
 				return false;
+			Hash hash;
 			// 负载因子 == 1
 			if (_n == _tables.size())
 			{
-				size_t newsize = _tables.size() == 0 ? 10 : _tables.size() * 2;
+				// size_t newsize = _tables.size() == 0 ? 10 : _tables.size() * 2;
+				size_t newsize = GetNextPrime(_tables.size());
 				vector<Node*> newtables(newsize, nullptr);
 				for (auto& cur : _tables)
 				{
 					while (cur)
 					{
 						Node* next = cur->_next;
-						size_t hashi = cur->_kv.first % newtables.size();
+						size_t hashi = hash(cur->_kv.first) % newtables.size();
 						// 头插到新表
 						cur->_next = newtables[hashi];
 						newtables[hashi] = cur;
@@ -177,7 +226,7 @@ namespace HashBucket
 				}
 				_tables.swap(newtables);
 			}
-			size_t hashi = kv.first % _tables.size();
+			size_t hashi = hash(kv.first) % _tables.size();
 			// 头插
 			Node* newnode = new Node(kv);
 			newnode->_next = _tables[hashi];
@@ -189,8 +238,10 @@ namespace HashBucket
 		{
 			if (_tables.size() == 0)
 				return nullptr;
+			
+			Hash hash;
 
-			size_t hashi = key % _tables.size();
+			size_t hashi = hash(key) % _tables.size();
 			Node* cur = _tables[hashi];
 			while (cur)
 			{
@@ -202,7 +253,9 @@ namespace HashBucket
 		}
 		bool Erase(const K& key)
 		{
-			size_t hashi = key % _tables.size();
+			Hash hash;
+
+			size_t hashi = hash(key) % _tables.size();
 			Node* prev = nullptr;
 			Node* cur = _tables[hashi];
 			while (cur)
@@ -224,6 +277,27 @@ namespace HashBucket
 				}
 			}
 			return false;
+		}
+
+		size_t MaxBucketSize()
+		{
+			size_t max = 0;
+			for (size_t i = 0; i < _tables.size(); ++i)
+			{
+				auto cur = _tables[i];
+				size_t size = 0;
+				while (cur)
+				{
+					++size;
+					cur = cur->_next;
+				}
+				printf("[%d]->%d\n", i, size);
+				if (size > max)
+				{
+					max = size;
+				}
+			}
+			return max;
 		}
 	private:
 		vector<Node*> _tables;
@@ -257,5 +331,50 @@ namespace HashBucket
 		ht.Erase(12);
 		ht.Erase(3);
 		ht.Erase(33);
+	}
+
+	struct HashStr
+	{
+		size_t operator()(const string& s)
+		{
+			size_t hash = 0;
+			for (auto ch : s)
+			{
+				hash += ch;
+				hash *= 31;
+			}
+			return hash;
+		}
+	};
+
+	void TestHashTable3()
+	{
+		// HashTable<string, string, HashStr> ht;
+		HashTable<string, string> ht;
+		ht.Insert(make_pair("sort", "排序"));
+		ht.Insert(make_pair("string", "字符串"));
+		ht.Insert(make_pair("left", "左边"));
+		ht.Insert(make_pair("right", "右边"));
+		ht.Insert(make_pair("", "右边"));
+
+		HashStr hashstr;
+		std::cout << hashstr("abcd") << std::endl;
+		std::cout << hashstr("bcda") << std::endl;
+		std::cout << hashstr("aadd") << std::endl;
+		std::cout << hashstr("eat") << std::endl;
+		std::cout << hashstr("ate") << std::endl;
+	}
+
+	void TestHashTable4()
+	{
+		int N = 10000;
+		srand((unsigned int)time(0));
+		HashTable<int, int> ht;
+		for (int i = 0; i < N; ++i)
+		{
+			size_t x = rand();
+			ht.Insert(make_pair(x, x));
+		}
+		std::cout << ht.MaxBucketSize();
 	}
 }

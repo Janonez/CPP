@@ -148,7 +148,9 @@ int main()
 	// OpenAddress::TestHashTable1();
 
 	// HashBucket::TestHashTable1();
-	HashBucket::TestHashTable2();
+	//HashBucket::TestHashTable2();
+	//HashBucket::TestHashTable3();
+	HashBucket::TestHashTable4();
 
 	return 0;
 }
