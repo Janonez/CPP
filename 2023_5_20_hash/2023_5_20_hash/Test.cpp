@@ -6,6 +6,7 @@ using namespace std;
 int main()
 {
 	//test_bitset();
-	test_twobitset();
+	//test_twobitset();
+	test_bloomfilter2();
 	return 0;
 }
